@@ -30,36 +30,36 @@
 
     {{-- Formulario --}}
     <section>
-        <form action="{{-- route('ventas.store') --}}" method="POST" class="space-y-6 bg-white shadow rounded-lg p-6">
+        <form action="{{ route('Ganadero.ventas.store') }}" method="POST" class="space-y-6 bg-white shadow rounded-lg p-6">
             @csrf
 
             <div class="grid md:grid-cols-2 gap-4">
                 {{-- ID del Vendedor --}}
                 <div>
-                    <label for="id_vendedor" class="block text-sm font-medium text-gray-700 mb-1">ID del Vendedor</label>
+                    <label for="id_vendedor" class="block text-sm font-medium text-gray-700 mb-1"> Vendedor</label>
                     <select name="id_vendedor" id="id_vendedor" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
                         <option value="">Seleccione una opción</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <!-- Puedes llenar esto dinámicamente -->
+                        @foreach ($Ganaderos as $Ganadero)
+                        <option value="{{ $Ganadero->id_usuario }}">{{ $Ganadero->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
                 {{-- ID del Comprador --}}
                 <div>
-                    <label for="id_comprador" class="block text-sm font-medium text-gray-700 mb-1">ID del Comprador</label>
+                    <label for="id_comprador" class="block text-sm font-medium text-gray-700 mb-1"> Comprador</label>
                     <select name="id_comprador" id="id_comprador" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
                         <option value="">Seleccione una opción</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <!-- Puedes llenar esto dinámicamente -->
+                        @foreach ($Ganaderos as $Ganadero)
+                        <option value="{{ $Ganadero->id_usuario }}">{{ $Ganadero->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
                 {{-- Tipo de Producción --}}
                 <div>
-                    <label for="tipo_produccion" class="block text-sm font-medium text-gray-700 mb-1">Tipo de Producción</label>
-                    <select name="tipo_produccion" id="tipo_produccion" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
+                    <label for="producto" class="block text-sm font-medium text-gray-700 mb-1">Tipo de Producción</label>
+                    <select name="producto" id="producto" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
                         <option value="">Seleccione una opción</option>
                         <option value="leche">Leche</option>
                         <option value="carne">Carne</option>
@@ -80,8 +80,8 @@
 
                 {{-- Fecha --}}
                 <div>
-                    <label for="fecha" class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
-                    <input type="date" name="fecha" id="fecha" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
+                    <label for="fecha_venta" class="block text-sm font-medium text-gray-700 mb-1">Fecha</label>
+                    <input type="date" name="fecha_venta" id="fecha" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
                 </div>
             </div>
 

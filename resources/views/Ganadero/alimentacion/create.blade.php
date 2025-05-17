@@ -31,16 +31,17 @@
 
     {{-- Recuadro con la información --}}
     <section class="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-md">
-        <form action="{{-- route('alimentacion.store') --}}" method="POST" class="space-y-6">
+        <form action="{{ route('Ganadero.alimentacion.store') }}" method="POST" class="space-y-6">
             @csrf
 
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
-                    <label for="tipo_produccion" class="block text-sm font-medium text-gray-700 mb-1">ID del Animal</label>
-                    <select name="tipo_produccion" id="tipo_produccion" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                    <label for="id_vaca" class="block text-sm font-medium text-gray-700 mb-1">ID del Animal</label>
+                    <select name="id_vaca" id="tipo_produccion" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="">Seleccione una opción</option>
-                        <option value="leche">1</option>
-                        <option value="carne">2</option>
+                        @foreach ($vacas as $vaca)
+                            <option value="{{ $vaca->id_vaca }}">{{ $vaca->nombre }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -51,8 +52,8 @@
                 </div>
 
                 <div>
-                    <label for="alimento" class="block text-sm font-medium text-gray-700 mb-1">Plan Alimenticio</label>
-                    <textarea name="alimento" id="alimento" rows="4" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" placeholder="Describe el plan alimenticio con detalle..." required></textarea>
+                    <label for="plan_alimenticio" class="block text-sm font-medium text-gray-700 mb-1">Plan Alimenticio</label>
+                    <textarea name="plan_alimenticio" id="plan_alimenticio" rows="4" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" placeholder="Describe el plan alimenticio con detalle..." required></textarea>
                 </div>
 
 

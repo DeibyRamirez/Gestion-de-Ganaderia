@@ -7,6 +7,7 @@
       <h1 class="text-3xl font-bold tracking-tight text-emerald-700">Alimentación</h1>
       <p class="text-muted-foreground">Gestione los planes alimenticios y dietas para su ganado</p>
     </div>
+
     <a href="{{ route('Ganadero.alimentacion.create') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
       <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="10"></circle>
@@ -14,6 +15,9 @@
       </svg>
       Nuevo Plan
     </a>
+
+
+
   </div>
   <div class="text-center mb-6">
 
@@ -38,11 +42,16 @@
     <div class="rounded-lg border p-4 shadow bg-white">
       <div class="flex justify-between items-center mb-2">
         <span class="text-2xl">🌿</span>
-        <h2 class="text-lg font-semibold">Vaca ID: {{ $plan->id_vaca }}</h2>
+        @foreach ($vacas as $vaca )
+
+        @if ($plan->id_vaca == $vaca->id_vaca)
+        <h2 class="text-lg font-semibold">Vaca: {{ $vaca->nombre }}</h2>
+        @endif
+        @endforeach
         <span class="text-sm px-2 py-0.5 bg-green-100 text-green-800 rounded-full">Plan #{{ $plan->id_alimentacion }}</span>
       </div>
 
-      <p class="mt-2 text-sm text-muted-foreground line-clamp-3" title="{{ $plan->plan_alimenticio }}">
+      <p class="mt-2 text-sm    text-muted-foreground line-clamp-3" title="{{ $plan->plan_alimenticio }}">
         <strong>Plan:</strong> {{ $plan->plan_alimenticio }}
       </p>
 

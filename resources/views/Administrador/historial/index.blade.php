@@ -16,6 +16,22 @@
     </a>
   </div>
 
+  <div class="text-center mb-6">
+
+
+    @if (session('success'))
+    <div id="success-mensaje" class="bg-green-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+      {{ session('success') }}
+    </div>
+    @endif
+
+    @if (session('error'))
+    <div id="error-mensaje" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+      {{ session('error') }}
+    </div>
+    @endif
+  </div>
+
   {{-- Tabla de historial médico --}}
   <div class="overflow-x-auto mt-6">
     @if ($historial_medico->isEmpty())
@@ -37,8 +53,8 @@
         @foreach ($historial_medico as $historial)
         <tr class="border-t">
           <td class="py-2 px-4">🐄 {{ $historial->id_vaca }}</td>
-          <td class="py-2 px-4">{{ $historial->diagnostico }}</td>
-          <td class="py-2 px-4">{{ $historial->sintomas }}</td>
+            <td class="py-2 px-4">{{ \Illuminate\Support\Str::limit($historial->diagnostico, 40) }}</td>
+            <td class="py-2 px-4">{{ \Illuminate\Support\Str::limit($historial->sintomas, 40) }}</td>
           <td class="py-2 px-4">{{ \Carbon\Carbon::parse($historial->fecha_diagnostico)->format('d/m/Y') }}</td>
           <td class="py-2 px-2 space-x-2 flex flex-wrap">
             <a href="{{ route('Ganadero.historial.show', $historial->id_historial) }}" class="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700">Ver</a>

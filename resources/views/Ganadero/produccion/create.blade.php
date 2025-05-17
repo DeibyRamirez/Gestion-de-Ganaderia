@@ -30,18 +30,18 @@
 
     {{-- Formulario --}}
     <section>
-        <form action="{{-- route('produccion.store') --}}" method="POST" class="space-y-6 bg-white shadow rounded-lg p-6">
+        <form action="{{ route('Ganadero.produccion.store') }}" method="POST" class="space-y-6 bg-white shadow rounded-lg p-6">
             @csrf
 
             <div class="grid md:grid-cols-2 gap-4">
                 {{-- ID del Animal --}}
                 <div>
                     <label for="id_vaca" class="block text-sm font-medium text-gray-700 mb-1">ID del Animal</label>
-                    <select name="id_vaca" id="id_vaca" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
+                    <select name="id_vaca" id="id_vaca" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="">Seleccione una opción</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <!-- Agrega dinámicamente los animales si es posible -->
+                        @foreach ($vacas as $vaca)
+                            <option value="{{ $vaca->id_vaca }}">{{ $vaca->nombre }}</option>
+                        @endforeach
                     </select>
                 </div>
 

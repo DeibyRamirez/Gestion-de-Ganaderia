@@ -1,3 +1,7 @@
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
+
+
 import './bootstrap';
 
 import './indicador_sidebar';

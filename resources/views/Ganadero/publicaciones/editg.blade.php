@@ -18,6 +18,17 @@
     @csrf
     @method('PUT')
 
+    {{-- ID de la Vaca --}}
+    <div>
+      <label for="id_vaca" class="block text-sm font-medium text-gray-700 mb-1"> Animal</label>
+      <select name="id_vaca" id="id_vaca" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
+      <option value="">Seleccione una opción</option>
+      @foreach ($Ganado as $vaca)
+      <option value="{{ $vaca->id_vaca }}" {{ old('id_vaca', $publicacion->id_vaca) == $vaca->id_vaca ? 'selected' : '' }}>{{ $vaca->nombre }}</option>
+      @endforeach
+      </select>
+    </div>
+
     {{-- ID del Ganadero --}}
     <div>
       <label for="id_ganadero" class="block text-sm font-medium text-gray-700 mb-1"> Ganadero</label>
@@ -46,29 +57,12 @@
     </div>
 
     <div>
-      <label for="tipo_producto" class="block font-semibold text-gray-700">Tipo de Producto</label>
-      <select name="tipo_producto" id="tipo_producto"
-        class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
-        <option value="">Seleccione...</option>
-        <option value="carne" {{ old('tipo_producto', $publicacion->tipo_producto) == 'Carne' ? 'selected' : '' }}>Carne</option>
-        <option value="leche" {{ old('tipo_producto', $publicacion->tipo_producto) == 'Leche' ? 'selected' : '' }}>Leche</option>
-      </select>
-    </div>
-
-    <div>
-      <label for="cantidad" class="block font-semibold text-gray-700">Cantidad</label>
-      <input type="number" name="cantidad" id="cantidad" min="1"
-        value="{{ old('cantidad', $publicacion->cantidad) }}"
-        class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
-    </div>
-
-    <div>
       <label for="estado" class="block font-semibold text-gray-700">Estado</label>
       <select name="estado" id="estado"
         class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-emerald-500" required>
         <option value="">Seleccione...</option>
-        <option value="disponible" {{ old('estado', $publicacion->estado) == 'Disponible' ? 'selected' : '' }}>Disponible</option>
-        <option value="vendido" {{ old('estado', $publicacion->estado) == 'Vendido' ? 'selected' : '' }}>Vendido</option>
+        <option value="Disponible" {{ old('estado', $publicacion->estado) == 'Disponible' ? 'selected' : '' }}>Disponible</option>
+        <option value="Vendido" {{ old('estado', $publicacion->estado) == 'Vendido' ? 'selected' : '' }}>Vendido</option>
       </select>
     </div>
 

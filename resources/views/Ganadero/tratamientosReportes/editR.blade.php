@@ -8,12 +8,29 @@
         @csrf
         @method('PUT')
 
+        <div class="grid md:grid-cols-2 gap-4">
+            {{-- ID del Gestor --}}
+            <div>
+                <label for="id_gestor" class="block text-sm font-medium text-gray-700 mb-1"> Gestor</label>
+                <select name="id_gestor" id="id_gestor" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                    <option value="">Seleccione una opción</option>
+                    @foreach ($Gestores as $gestor)
+                    <option value="{{ $gestor->id_usuario }}" {{ (old('id_gestor', $reporte->id_gestor) == $gestor->id_usuario) ? 'selected' : '' }}>
+                        {{ $gestor->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+
+        </div>
+
         <div>
             <label for="descripcion" class="block text-sm font-medium text-gray-700">Descripcion</label>
             <textarea type="text" name="descripcion" id="descripcion" required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">{{ old('descripcion', $reporte->descripcion) }}</textarea>
         </div>
-        
+
         <div>
             <label for="fecha_reporte" class="block text-sm font-medium text-gray-700">Fecha del Reporte</label>
             <input type="date" name="fecha_reporte" id="fecha_reporte" value="{{ old('fecha_reporte', $reporte->fecha_reporte) }}" required

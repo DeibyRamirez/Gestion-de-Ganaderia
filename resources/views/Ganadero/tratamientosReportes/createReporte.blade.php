@@ -29,17 +29,18 @@
 
     {{-- Recuadro del formulario --}}
     <section class="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-md">
-        <form action="" method="POST" class="space-y-6">
+        <form action="{{ route('Ganadero.tratamientosReportes.storeR') }}" method="POST" class="space-y-6">
             @csrf
 
             <div class="grid md:grid-cols-2 gap-4">
                 {{-- ID del Gestor --}}
                 <div>
-                    <label for="gestor_id" class="block text-sm font-medium text-gray-700 mb-1">ID del Gestor</label>
-                    <select name="gestor_id" id="gestor_id" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                    <label for="id_gestor" class="block text-sm font-medium text-gray-700 mb-1"> Gestor</label>
+                    <select name="id_gestor" id="id_gestor" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="">Seleccione una opción</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
+                        @foreach ($Gestores as $gestor)
+                            <option value="{{ $gestor->id_usuario }}">{{ $gestor->name }}</option>
+                        @endforeach
                     </select>
                 </div>
 
@@ -48,14 +49,14 @@
 
             {{-- Descripcion Reporte --}}
             <div>
-                <label for="tratamiento" class="block text-sm font-medium text-gray-700 mb-1">Descripcion</label>
-                <textarea name="tratamiento" id="tratamiento" rows="4" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" placeholder="Describe el Reporte..."></textarea>
+                <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-1">Descripcion</label>
+                <textarea name="descripcion" id="descripcion" rows="4" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" placeholder="Describe el Reporte..."></textarea>
             </div>
 
             {{-- Fecha del Reporte --}}
             <div>
-                <label for="fecha" class="block text-sm font-medium text-gray-700 mb-1">Fecha del Reporte</label>
-                <input type="date" name="fecha" id="fecha" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                <label for="fecha_reporte" class="block text-sm font-medium text-gray-700 mb-1">Fecha del Reporte</label>
+                <input type="date" name="fecha_reporte" id="fecha_reporte" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
             </div>
 
             {{-- Botón de envío --}}

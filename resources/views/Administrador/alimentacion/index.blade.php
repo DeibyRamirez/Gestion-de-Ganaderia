@@ -16,6 +16,23 @@
     </a>
   </div>
 
+  <div class="text-center mb-6">
+
+
+    @if (session('success'))
+    <div id="success-mensaje" class="bg-green-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+      {{ session('success') }}
+    </div>
+    @endif
+
+    @if (session('error'))
+    <div id="error-mensaje" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+      {{ session('error') }}
+    </div>
+    @endif
+  </div>
+
+
   {{-- Tabla de planes de alimentación --}}
   <div class="overflow-x-auto mt-6">
     @if ($alimentacion->isEmpty())
@@ -27,7 +44,7 @@
       <thead class="bg-gray-100 text-gray-700 text-sm uppercase">
         <tr>
           <th class="py-3 px-4 text-left">ID Plan</th>
-          <th class="py-3 px-4 text-left">Vaca ID</th>
+          <th class="py-3 px-4 text-left">Vaca</th>
           <th class="py-3 px-4 text-left">Plan Alimenticio</th>
           <th class="py-3 px-4 text-left">Fecha de Inicio</th>
           <th class="py-3 px-4 text-left">Fecha de Fin</th>
@@ -38,8 +55,12 @@
         @foreach ($alimentacion as $plan)
         <tr class="border-t">
           <td class="py-2 px-4">#{{ $plan->id_alimentacion }}</td>
-          <td class="py-2 px-4">🐄 {{ $plan->id_vaca }}</td>
-          <td class="py-2 px-2">{{ $plan->plan_alimenticio }}</td>
+          @foreach ($vacas as $vaca)
+          @if ($plan->id_vaca == $vaca->id_vaca)
+          <td class="py-2 px-4">🐄 {{ $vaca->nombre }}</td>
+          @endif
+          @endforeach
+          <td class="py-2 px-2">{{ \Illuminate\Support\Str::limit($plan->plan_alimenticio, 40) }}</td>
           <td class="py-2 px-4">{{ \Carbon\Carbon::parse($plan->fecha_inicio)->format('d/m/Y') }}</td>
           <td class="py-2 px-4">{{ \Carbon\Carbon::parse($plan->fecha_fin)->format('d/m/Y') }}</td>
           

@@ -14,7 +14,7 @@ class Reporte extends Model
 
     protected $fillable = ['id_gestor', 'descripcion', 'fecha_reporte'];
     public function gestor()
-    {
-        return $this->belongsTo(User::class, 'id_usuario');
-    }
+{
+    return $this->belongsTo(User::class, 'id_gestor', 'id_usuario');
+}
 }

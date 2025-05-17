@@ -18,11 +18,27 @@
             </a>
         </div>
 
+        <div class="text-center mb-6">
+
+
+            @if (session('success'))
+            <div id="success-mensaje" class="bg-green-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+                {{ session('success') }}
+            </div>
+            @endif
+
+            @if (session('error'))
+            <div id="error-mensaje" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+                {{ session('error') }}
+            </div>
+            @endif
+        </div>
+
         <div class="overflow-x-auto mt-6">
             @if ($produccion->where('tipo_produccion', 'leche')->isEmpty())
-                <div class="text-center text-muted-foreground py-10">
-                    No hay registros de producción de leche.
-                </div>
+            <div class="text-center text-muted-foreground py-10">
+                No hay registros de producción de leche.
+            </div>
             @else
             <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow">
                 <thead class="bg-gray-100 text-gray-700 text-sm uppercase">
@@ -36,12 +52,12 @@
                 </thead>
                 <tbody class="text-gray-700">
                     @foreach ($produccion->where('tipo_produccion', 'leche') as $registro)
-                        <tr class="border-t">
-                            <td class="py-2 px-4">#{{ $registro->id_produccion }}</td>
-                            <td class="py-2 px-4">🐄 {{ $registro->id_vaca }}</td>
-                            <td class="py-2 px-4">{{ $registro->cantidad }} L</td>
-                            <td class="py-2 px-4">{{ \Carbon\Carbon::parse($registro->fecha)->format('d/m/Y') }}</td>
-                            <td class="py-2 px-4 space-x-2 flex flex-wrap">
+                    <tr class="border-t">
+                        <td class="py-2 px-4">#{{ $registro->id_produccion }}</td>
+                        <td class="py-2 px-4">🐄 {{ $registro->id_vaca }}</td>
+                        <td class="py-2 px-4">{{ $registro->cantidad }} L</td>
+                        <td class="py-2 px-4">{{ \Carbon\Carbon::parse($registro->fecha)->format('d/m/Y') }}</td>
+                        <td class="py-2 px-4 space-x-2 flex flex-wrap">
                             <a href="{{ route('Ganadero.produccion.show', $registro->id_produccion) }}" class="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700">Ver</a>
                             <a href="{{ route('Ganadero.produccion.edit', $registro->id_produccion) }}" class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Editar</a>
                             <form action="{{ route('Ganadero.produccion.destroy', $registro->id_produccion)}}" method="POST" onsubmit="return confirm('¿Está seguro de que desea eliminar esta publicación?');">
@@ -50,7 +66,7 @@
                                 <button type="submit" class="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">Eliminar</button>
                             </form>
                         </td>
-                        </tr>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -72,9 +88,9 @@
 
         <div class="overflow-x-auto mt-6">
             @if ($produccion->where('tipo_produccion', 'carne')->isEmpty())
-                <div class="text-center text-muted-foreground py-10">
-                    No hay registros de producción de carne.
-                </div>
+            <div class="text-center text-muted-foreground py-10">
+                No hay registros de producción de carne.
+            </div>
             @else
             <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow">
                 <thead class="bg-gray-100 text-gray-700 text-sm uppercase">
@@ -88,12 +104,12 @@
                 </thead>
                 <tbody class="text-gray-700">
                     @foreach ($produccion->where('tipo_produccion', 'carne') as $registro)
-                        <tr class="border-t">
-                            <td class="py-2 px-4">#{{ $registro->id_produccion }}</td>
-                            <td class="py-2 px-4">🐄 {{ $registro->id_vaca }}</td>
-                            <td class="py-2 px-4">{{ $registro->cantidad }} Kg</td>
-                            <td class="py-2 px-4">{{ \Carbon\Carbon::parse($registro->fecha)->format('d/m/Y') }}</td>
-                            <td class="py-2 px-4 space-x-2 flex flex-wrap">
+                    <tr class="border-t">
+                        <td class="py-2 px-4">#{{ $registro->id_produccion }}</td>
+                        <td class="py-2 px-4">🐄 {{ $registro->id_vaca }}</td>
+                        <td class="py-2 px-4">{{ $registro->cantidad }} Kg</td>
+                        <td class="py-2 px-4">{{ \Carbon\Carbon::parse($registro->fecha)->format('d/m/Y') }}</td>
+                        <td class="py-2 px-4 space-x-2 flex flex-wrap">
                             <a href="{{ route('Ganadero.produccion.show', $registro->id_produccion) }}" class="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700">Ver</a>
                             <a href="{{ route('Ganadero.produccion.edit', $registro->id_produccion) }}" class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Editar</a>
                             <form action="{{ route('Ganadero.produccion.destroy', $registro->id_produccion)}}" method="POST" onsubmit="return confirm('¿Está seguro de que desea eliminar esta publicación?');">
@@ -102,7 +118,7 @@
                                 <button type="submit" class="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">Eliminar</button>
                             </form>
                         </td>
-                        </tr>
+                    </tr>
                     @endforeach
                 </tbody>
             </table>

@@ -7,12 +7,23 @@
         <div>
             <h1 class="text-4xl font-bold text-emerald-700">Registro de Producción Detallada</h1>
         </div>
-        <a href="{{ route('Ganadero.produccion.index') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
-            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M15 18l-6-6 6-6" />
-            </svg>
-            Volver a Producciones
-        </a>
+        <div class="flex items-center space-x-2">
+
+            <a href="{{ route('Ganadero.produccion.create') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
+                <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M8 12h8M12 8v8"></path>
+                </svg>
+                Nueva Producción
+            </a>
+            <a href="{{ route('Ganadero.produccion.index') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
+                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+                Volver a Producciones
+            </a>
+        </div>
+
     </div>
 
     <div class="text-center mb-6">
@@ -54,6 +65,11 @@
                             {{ $registro->cantidad }} kg
                         </span>
                     </p>
+                    @foreach ($vacas as $vaca )
+                    @if ($vaca->id_vaca == $registro->id_vaca)
+                    <p class="text-sm text-gray-500">Nombre: {{ $vaca->nombre }}</p>
+                    @endif
+                    @endforeach
                     <p class="text-sm text-gray-500">Ganado ID: {{ $registro->id_vaca }}</p>
                 </div>
                 <div class="mt-5 flex justify-end space-x-2">
@@ -97,6 +113,11 @@
                         {{ $registro->cantidad }} L
                     </span>
                 </p>
+                @foreach ($vacas as $vaca )
+                @if ($vaca->id_vaca == $registro->id_vaca)
+                <p class="text-sm text-gray-500">Nombre: {{ $vaca->nombre }}</p>
+                @endif
+                @endforeach
                 <p class="text-sm text-gray-500">Ganado ID: {{ $registro->id_vaca }}</p>
             </div>
             <div class="mt-5 flex justify-end space-x-2">

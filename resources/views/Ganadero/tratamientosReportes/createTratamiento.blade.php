@@ -29,41 +29,44 @@
 
     {{-- Recuadro del formulario --}}
     <section class="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-md">
-        <form action="" method="POST" class="space-y-6">
+        <form action="{{ route('Ganadero.tratamientosReportes.store') }}" method="POST" class="space-y-6">
             @csrf
 
             <div class="grid md:grid-cols-2 gap-4">
                 {{-- ID del Gestor --}}
                 <div>
-                    <label for="gestor_id" class="block text-sm font-medium text-gray-700 mb-1">ID del Gestor</label>
-                    <select name="gestor_id" id="gestor_id" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                    <label for="id_gestor" class="block text-sm font-medium text-gray-700 mb-1">ID del Gestor</label>
+                    <select name="id_gestor" id="id_gestor" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="">Seleccione una opción</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
+                        @foreach ($Gestores as $gestor)
+                        <option value="{{ $gestor->id_usuario}}">{{ $gestor->name }}</option>
+                        @endforeach
+
                     </select>
                 </div>
 
                 {{-- ID del Historial --}}
                 <div>
-                    <label for="historial_id" class="block text-sm font-medium text-gray-700 mb-1">ID del Historial</label>
-                    <select name="historial_id" id="historial_id" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                    <label for="id_historial" class="block text-sm font-medium text-gray-700 mb-1">ID del Historial</label>
+                    <select name="id_historial" id="id_historial" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="">Seleccione una opción</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
+                        @foreach ($historiales as $historial)
+                        <option value="{{ $historial->id_historial }}">{{ $historial->id_historial }}</option>
+                        @endforeach
                     </select>
                 </div>
             </div>
 
-            {{-- Tratamiento aplicado --}}
+            {{-- Descripcion aplicado --}}
             <div>
-                <label for="tratamiento" class="block text-sm font-medium text-gray-700 mb-1">Tratamiento Aplicado</label>
-                <textarea name="tratamiento" id="tratamiento" rows="4" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" placeholder="Describe el tratamiento aplicado..."></textarea>
+                <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-1">Tratamiento Aplicado</label>
+                <textarea name="descripcion" id="descripcion" rows="4" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" placeholder="Describe el tratamiento aplicado..."></textarea>
             </div>
 
             {{-- Fecha del tratamiento --}}
             <div>
-                <label for="fecha" class="block text-sm font-medium text-gray-700 mb-1">Fecha del Tratamiento</label>
-                <input type="date" name="fecha" id="fecha" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                <label for="fecha_tratamiento" class="block text-sm font-medium text-gray-700 mb-1">Fecha del Tratamiento</label>
+                <input type="date" name="fecha_tratamiento" id="fecha_tratamiento" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
             </div>
 
             {{-- Botón de envío --}}

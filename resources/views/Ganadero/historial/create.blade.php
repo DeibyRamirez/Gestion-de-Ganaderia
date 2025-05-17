@@ -28,21 +28,22 @@
 
     {{-- Recuadro del formulario --}}
     <section class="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-md">
-        <form action="{{-- route('historial.store') --}}" method="POST" class="space-y-6">
+        <form action="{{ route('Ganadero.historial.store') }}" method="POST" class="space-y-6">
             @csrf
             <div class="grid md:grid-cols-2 gap-4">
                 <div>
-                    <label for="tipo_produccion" class="block text-sm font-medium text-gray-700 mb-1">ID del Animal</label>
-                    <select name="tipo_produccion" id="tipo_produccion" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                    <label for="id_vaca" class="block text-sm font-medium text-gray-700 mb-1">Nombre del Animal</label>
+                    <select name="id_vaca" id="tipo_produccion" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="">Seleccione una opción</option>
-                        <option value="leche">1</option>
-                        <option value="carne">2</option>
+                        @foreach ($vacas as $vaca)
+                        <option value="{{ $vaca->id_vaca }}">{{ $vaca->nombre }}</option>
+                        @endforeach
                     </select>
                 </div>
 
                 <div>
-                    <label for="fecha" class="block text-sm font-medium text-gray-700 mb-1">Fecha del Diagnóstico</label>
-                    <input type="date" name="fecha" id="fecha" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                    <label for="fecha_diagnostico" class="block text-sm font-medium text-gray-700 mb-1">Fecha del Diagnóstico</label>
+                    <input type="date" name="fecha_diagnostico" id="fecha_diagnostico" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                 </div>
             </div>
 

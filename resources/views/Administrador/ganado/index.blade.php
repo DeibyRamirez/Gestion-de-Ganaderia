@@ -18,6 +18,22 @@
     </a>
   </div>
 
+  <div class="text-center mb-6">
+
+
+    @if (session('success'))
+    <div id="success-mensaje" class="bg-green-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+      {{ session('success') }}
+    </div>
+    @endif
+
+    @if (session('error'))
+    <div id="error-mensaje" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+      {{ session('error') }}
+    </div>
+    @endif
+  </div>
+
   {{-- Tabla de Ganado --}}
   <div class="overflow-x-auto mt-6">
     <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow">

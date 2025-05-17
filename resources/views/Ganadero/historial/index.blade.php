@@ -50,7 +50,12 @@
           <div class="bg-gray-50 p-5 rounded-md shadow-sm hover:shadow-md transition">
             <h3 class="text-lg font-medium text-gray-900">Diagnóstico: {{ $historial->diagnostico }}</h3>
             <p class="text-sm text-gray-600 mt-1"><strong>Síntomas:</strong> {{ $historial->sintomas }}</p>
-            <p class="text-sm text-gray-600 mt-1"><strong>ID Vaca:</strong> {{ $historial->id_vaca }}</p>
+            @foreach ($vacas as $vaca)
+            @if ($vaca->id_vaca == $historial->id_vaca)
+            <p class="text-sm text-gray-600 mt-1"><strong>Nombre Vaca:</strong> {{ $vaca->nombre }}</p>
+            @endif
+            @endforeach
+
             <p class="text-xs text-gray-500 mt-2">📅 Fecha: {{ \Carbon\Carbon::parse($historial->fecha_diagnostico)->format('d/m/Y') }}</p>
             <div class="mt-3">
 

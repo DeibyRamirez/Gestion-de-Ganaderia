@@ -4,9 +4,21 @@
 <div class="max-w-3xl mx-auto space-y-6">
     <h1 class="text-3xl font-bold tracking-tight text-emerald-700">Editar Plan alimenticio</h1>
 
-    <form action="{{ route('Ganadero.alimentacion.update', $alimentacion->id_vaca) }}" method="POST" class="space-y-6 bg-white border p-6 rounded-2xl shadow-sm">
+    <form action="{{ route('Ganadero.alimentacion.update', $alimentacion->id_alimentacion) }}" method="POST" class="space-y-6 bg-white border p-6 rounded-2xl shadow-sm">
         @csrf
         @method('PUT')
+        <div>
+            <label for="id_vaca" class="block text-sm font-medium text-gray-700 mb-1">Nombre del Animal</label>
+            <select name="id_vaca" id="tipo_produccion" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                <option value="">Seleccione una opción</option>
+                @foreach ($vacas as $vaca)
+                <option value="{{ $vaca->id_vaca }}" {{ old('id_vaca', $alimentacion->id_vaca) == $vaca->id_vaca ? 'selected' : '' }}>
+                    {{ $vaca->nombre }}
+                </option>
+                @endforeach
+            </select>
+        </div>
+
 
         <div>
             <label for="plan_alimenticio" class="block text-sm font-medium text-gray-700">Plan alimenticio</label>
@@ -42,6 +54,10 @@
             </a>
             @endif
         </div>
-    </form>
+
+</div>
+
+
+</form>
 </div>
 @endsection

@@ -7,7 +7,7 @@
   <div class="rounded-2xl border border-gray-200 bg-white shadow-sm p-6">
     <div class="flex items-center space-x-3 mb-4">
       <span class="text-4xl">💉</span>
-      <h2 class="text-2xl font-bold text-gray-800"> Vaca #{{ $historial_medico->id_vaca }}</h2>
+      <h2 class="text-2xl font-bold text-gray-800"> Vaca {{ $vaca->nombre }}</h2>
     </div>
     
     <div class="text-gray-700 space-y-2 text-base">

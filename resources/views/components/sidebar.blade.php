@@ -33,6 +33,18 @@
                 @endif
             </div>
 
+            {{-- Usuarios --}}
+            @if (Auth()->user()->rol === 'administrador')
+            <div id="sidebar_usuarios" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded transition">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users-icon lucide-users">
+                    <path d="M16 11a4 4 0 1 0-8 0" />
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <path d="M12 12h.01" />
+                </svg>
+                <a href="{{ route('Administrador.usuario.index') }}" class="text-sm font-medium text-gray-700"><span class="text-lg font-semibold">Usuarios</span></a>
+            </div>
+            @endif
+
             {{-- Ganado --}}
 
             <div id="sidebar_ganado" class="flex items-center gap-2 p-2 hover:bg-gray-100 rounded transition">

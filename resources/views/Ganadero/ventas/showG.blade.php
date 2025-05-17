@@ -7,14 +7,12 @@
     <div class="rounded-2xl border border-gray-200 bg-white shadow-sm p-6">
         <div class="flex items-center space-x-3 mb-4">
             <span class="text-4xl">🔔</span>
-            <h2 class="text-2xl font-bold text-gray-800"> Vaca #{{ $venta_g->id_venta }}</h2>
+            <h2 class="text-2xl font-bold text-gray-800"> Vaca {{ $Ganado->nombre }}</h2>
         </div>
 
         <div class="text-gray-700 space-y-2 text-base">
 
-            <p><strong>ID Comprador:</strong> {{ $venta_g->id_comprador }}</p>
-            <p><strong>Vaca:</strong> {{ $venta_g->id_vaca }}</p>
-
+            <p><strong>Comprador:</strong> {{ $comprador ? $comprador->name : 'No encontrado' }}</p>
             <p><strong>Precio:</strong> {{ $venta_g->precio }}</p>
             <p><strong>Fecha Venta:</strong> {{ $venta_g->fecha_venta }}</p>
 

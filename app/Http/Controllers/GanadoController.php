@@ -5,26 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Ganado;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class GanadoController extends Controller
 {
     public function indexGanadero()
     {
-        $ganado = Ganado::all();
+        // LLamo a los datos de ganado en el proceso almacenado
+        $ganadoData = DB::select('CALL ObtenerGanado()');
+
+        // Utilizo collect para convertir el resultado en una colección y motrarlo en la vista
+        $ganado = collect($ganadoData); // Sin mapear a modelo
         return view('Ganadero.ganado.index', compact('ganado'));
     }
 
     public function indexAdministrador()
     {
-        $ganado = Ganado::all();
-        return view('Administrador.ganado.index', compact('ganado'));
-    }
+        $ganadoData = DB::select('CALL ObtenerGanado()');
 
-    public function indexGestor()
-    {
-        $ganado = Ganado::all();
-        return view('Gestor.ganado.index', compact('ganado'));
+        $ganado = collect($ganadoData); // Sin mapear a modelo
+        return view('Administrador.ganado.index', compact('ganado'));
     }
 
     public function create()
@@ -35,63 +36,83 @@ class GanadoController extends Controller
     public function store(Request $request)
     {
         try {
-            Ganado::create([
-                'id_ganadero'=> Auth::id(),
-                'nombre' => $request->nombre,
-                'raza' => $request->raza,
-                'edad' => $request->edad,
-                'tipo' => $request->tipo,
-                'fecha_nacimiento' => $request->fecha_nacimiento,
-            ]);
-            return redirect()->route('Ganadero.ganado.index')->with('success', 'Ganado creado exitosamente.');
-        } catch (\Throwable $th) {
-            Log::error('Error al crear ganado: ' . $th->getMessage());
-            return redirect()->route('Ganadero.ganado.index')->with('error', 'Error al crear ganado.')->withInput();
-        }
 
+            // Proceso almacenado para insertar ganado
+            DB::statement('CALL InsertarGanado(?, ?, ?, ?, ?, ?)', [
+                Auth::user()->id_usuario,
+                $request->nombre,
+                $request->raza,
+                $request->edad,
+                $request->tipo,
+                $request->fecha_nacimiento
+            ]);
+            if(Auth::user()->rol == 'ganadero'){
+                return redirect()->route('Ganadero.ganado.index')->with('success', 'Ganado registrado exitosamente.');
+            }elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
+                return redirect()->route('Administrador.ganado.index')->with('success', 'Ganado registrado exitosamente.');
+            }
+        } catch (\Throwable $th) {
+            Log::error('Error al registrar el ganado: ' . $th->getMessage());
+            if (Auth::user()->rol == 'ganadero') {
+                return redirect()->route('Ganadero.ganado.index')->with('error', 'Error al registrar el ganado.')->withInput();
+            } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
+                return redirect()->route('Administrador.ganado.index')->with('error', 'Error al registrar el ganado.')->withInput();
+            }
+        }
     }
 
     public function show($id)
     {
-        $vaca = Ganado:: with('user')-> findOrFail($id);
+        //Proceso almacenado para obtener el ganado por id
+        $vacaData = DB::select('CALL ObtenerGanadoId(?)', [$id]);
+
+        $vaca = collect($vacaData)->first(); // Sin mapear a modelo
+
         return view('Ganadero.ganado.show', compact('vaca'));
     }
+
     public function edit($id)
     {
+        // Fomulario de edición
         $vaca = Ganado::findOrFail($id);
         return view('Ganadero.ganado.edit', compact('vaca'));
     }
     public function update(Request $request, $id)
     {
-        $vaca = Ganado::findOrFail($id);
+        // Proceso almacenado para actualizar ganado
         try {
-            $vaca->update([
-                'nombre' => $request->nombre,
-                'raza' => $request->raza,
-                'edad' => $request->edad,
-                'tipo' => $request->tipo,
-                'fecha_nacimiento' => $request->fecha_nacimiento,
+            DB::statement('CALL ActualizarGanado(?, ?, ?, ?, ?, ?, ?)', [
+                $id,
+                Auth::user()->id_usuario,
+                $request->nombre,
+                $request->raza,
+                $request->edad,
+                $request->tipo,
+                $request->fecha_nacimiento
             ]);
-            return redirect()->route('Ganadero.ganado.index')->with('success', 'Ganado actualizado exitosamente.');
-
-        }catch (\Throwable $th) {
+            if (Auth::user()->rol == 'ganadero') {
+                return redirect()->route('Ganadero.ganado.index')->with('success', 'Ganado actualizado exitosamente.');
+            } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
+                return redirect()->route('Administrador.ganado.index')->with('success', 'Ganado actualizado exitosamente.');
+            }
+        } catch (\Throwable $th) {
             Log::error('Error al actualizar el ganado: ' . $th->getMessage());
-            return redirect()->route('Ganadero.ganado.index')->with('error', 'Error al actualizar el  ganado.')->withInput();
+            if (Auth::user()->rol == 'ganadero') {
+                return redirect()->route('Ganadero.ganado.index')->with('error', 'Error al actualizar el ganado.')->withInput();
+            } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
+                return redirect()->route('Administrador.ganado.index')->with('error', 'Error al actualizar el ganado.')->withInput();
+            }
         }
-       
-        
     }
     public function destroy($id)
     {
-        $vaca = Ganado::findOrFail($id);
-        try{
-            $vaca->delete();
-        return redirect()->route('Ganadero.ganado.index')->with('success', 'Ganado eliminado exitosamente.');
+        // Proceso almacenado para eliminar ganado
+        DB::statement('CALL EliminarGanado(?)', [$id]);
+        if (Auth::user()->rol == 'ganadero') {
+            return redirect()->route('Ganadero.ganado.index')->with('success', 'Ganado eliminado exitosamente.');
+        } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
+            return redirect()->route('Administrador.ganado.index')->with('success', 'Ganado eliminado exitosamente.');
         }
-        catch (\Throwable $th) {
-            Log::error('Error al eliminar el ganado: ' . $th->getMessage());
-            return redirect()->route('Ganadero.ganado.index')->with('error', 'Error al eliminar el  ganado.')->withInput();
-        }
-        
+
     }
 }

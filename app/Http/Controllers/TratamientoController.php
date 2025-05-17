@@ -2,49 +2,102 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HistorialMedico;
 use App\Models\Tratamiento;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TratamientoController extends Controller
 {
     public function index()
     {
-        $tratamientos = Tratamiento::all();
-        return view('Ganadero.tratamientosReportes.index', compact('tratamientos'));
+
+        $tratamientosData = DB::select('CALL ObtenerTratamiento()');
+        $tratamientos = collect($tratamientosData); // Sin mapear a modelo
+        $Gestores = Tratamiento::with('gestor')->get();
+        return view('Ganadero.tratamientosReportes.index', compact('tratamientos', 'Gestores'));
+
     }
 
     public function createTratamiento()
     {
-        return view('Ganadero.tratamientosReportes.createTratamiento');
+        $Gestores = User::all();
+        $historiales = HistorialMedico::all();
+        return view('Ganadero.tratamientosReportes.createTratamiento', compact('Gestores', 'historiales'));
     }
 
     public function store(Request $request)
     {
-        // Aquí puedes manejar la lógica para almacenar el tratamiento
-        // Por ejemplo, guardar en la base de datos
-
-        return redirect()->route('Ganadero.tratamientosReportes.index')->with('success', 'Tratamiento creado exitosamente.');
+        try {
+            // Proceso almacenado para insertar ganado
+            DB::statement('CALL InsertarTratamiento(?, ?, ?, ?)', [
+                $request->id_gestor,
+                $request->id_historial,
+                $request->descripcion,
+                $request->fecha_tratamiento,
+            ]);
+            if (Auth::user()->rol == 'ganadero') {
+                return redirect()->route('Ganadero.tratamientosReportes.index')->with('success', 'Tratamiento creado con éxito.');
+            } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
+                return redirect()->route('Administrador.tratamientosReportes.index')->with('success', 'Tratamiento creado con éxito.');
+            }
+        } catch (\Throwable $th) {
+            Log::error('Error al crear la Producción: ' . $th->getMessage());
+            if (Auth::user()->rol == 'ganadero') {
+                return redirect()->route('Ganadero.tratamientosReportes.index')->with('error', 'Error al crear el Tratamiento.')->withInput();
+            } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
+                return redirect()->route('Administrador.tratamientosReportes.index')->with('error', 'Error al crear el Tratamiento.')->withInput();
+            }
+        }
     }
     public function show($id)
     {
-        $tratamiento = Tratamiento::findOrFail($id);
+        $tratamientosData = DB::select('CALL ObtenerTratamientoId(?)', [$id]);
+        $tratamiento = collect($tratamientosData)->first();
         return view('Ganadero.tratamientosReportes.show', compact('tratamiento'));
     }
     public function edit($id)
     {
         $tratamiento = Tratamiento::findOrFail($id);
-        return view('Ganadero.tratamientosReportes.edit', compact('tratamiento'));
+        $Gestores = User::all();
+        $historiales = HistorialMedico::all();
+        return view('Ganadero.tratamientosReportes.edit', compact('tratamiento', 'Gestores', 'historiales'));
     }
     public function update(Request $request, $id)
     {
-        $tratamiento = Tratamiento::findOrFail($id);
-        $tratamiento->update($request->all());
-        return redirect()->route('Ganadero.tratamientosReportes.index')->with('success', 'Tratamiento actualizado exitosamente.');
+        try {
+            DB::statement('CALL ActualizarTratamiento(?, ?, ?, ?, ?)', [
+                $id,
+                $request->id_gestor,
+                $request->id_historial,
+                $request->descripcion,
+                $request->fecha_tratamiento,
+            ]);
+            if (Auth::user()->rol == 'ganadero') {
+                return redirect()->route('Ganadero.tratamientosReportes.index')->with('success', 'Tratamiento actualizada con éxito.');
+            } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
+                return redirect()->route('Administrador.tratamientosReportes.index')->with('success', 'Tratamiento actualizada con éxito.');
+            }
+        } catch (\Throwable $th) {
+            Log::error('Error al actualizar la Producción: ' . $th->getMessage());
+            if (Auth::user()->rol == 'ganadero') {
+                return redirect()->route('Ganadero.tratamientosReportes.index')->with('error', 'Error al actualizar el tratamiento.')->withInput();
+            } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
+                return redirect()->route('Administrador.tratamientosReportes.index')->with('error', 'Error al actualizar el tratamiento.')->withInput();
+            }
+        }
     }
     public function destroy($id)
     {
-        $tratamiento = Tratamiento::findOrFail($id);
-        $tratamiento->delete();
-        return redirect()->route('Ganadero.tratamientosReportes.index')->with('success', 'Tratamiento eliminado exitosamente.');
+        // Proceso almacenado para eliminar ganado
+        DB::statement('CALL EliminarTratamiento(?)', [$id]);
+        if (Auth::user()->rol == 'ganadero') {
+            return redirect()->route('Ganadero.tratamientosReportes.index')->with('success', 'Tratamiento eliminado exitosamente.');
+        } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
+            return redirect()->route('Administrador.tratamientosReportes.index')->with('success', 'Tratamiento eliminado exitosamente.');
+        }
     }
 }

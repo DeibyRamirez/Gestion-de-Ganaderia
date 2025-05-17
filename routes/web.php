@@ -47,6 +47,7 @@ use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\VentaGeneralController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\Tratamientos_ReportesController;
+use App\Http\Controllers\UsuarioController;
 
 
 // RUTAS ADMINISTRACIÓN DEL GANADO
@@ -127,12 +128,12 @@ Route::put('/tratamientos/{id}/update', action: [TratamientoController::class, '
 Route::delete('/tratamientos/{id}/delete', [TratamientoController::class, 'destroy'])->name('Ganadero.tratamientosReportes.destroy');
 
 //Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
-Route::get('/reportes/crear', [ReporteController::class, 'createReporte'])->name('Ganadero.tratamientosReportes.createReporte');
-Route::post('/reportes', action: [ReporteController::class, 'store'])->name('Ganadero.tratamientosReportes.storeR');
-Route::get('/reportes/{id}', action: [ReporteController::class, 'show'])->name('Ganadero.tratamientosReportes.showR');
-Route::get('/reportes/{id}/edit', action: [ReporteController::class, 'edit'])->name('Ganadero.tratamientosReportes.editR');
-Route::put('/reportes/{id}/update', action: [ReporteController::class, 'update'])->name('Ganadero.tratamientosReportes.updateR');
-Route::delete('/reportes/{id}/delete', [ReporteController::class, 'destroy'])->name('Ganadero.tratamientosReportes.destroyR');
+Route::get('/reportes/crear', [ReporteController::class, 'createR'])->name('Ganadero.tratamientosReportes.createR');
+Route::post('/reportes', action: [ReporteController::class, 'storeR'])->name('Ganadero.tratamientosReportes.storeR');
+Route::get('/reportes/{id}', action: [ReporteController::class, 'showR'])->name('Ganadero.tratamientosReportes.showR');
+Route::get('/reportes/{id}/edit', action: [ReporteController::class, 'editR'])->name('Ganadero.tratamientosReportes.editR');
+Route::put('/reportes/{id}/update', action: [ReporteController::class, 'updateR'])->name('Ganadero.tratamientosReportes.updateR');
+Route::delete('/reportes/{id}/delete', [ReporteController::class, 'destroyR'])->name('Ganadero.tratamientosReportes.destroyR');
 
 
 
@@ -143,6 +144,7 @@ Route::get('/ventasGestor', [VentaController::class, 'indexGestor'])->name('Gest
 
 Route::get('/ventas/crearproduccion', [VentaController::class, 'createProduccion'])->name('Ganadero.ventas.createProduccion');
 Route::post('/ventas', action: [VentaController::class, 'store'])->name('Ganadero.ventas.store');
+Route::post('/ventas_G', action: [VentaController::class, 'storeG'])->name('Ganadero.ventas.storeG');
 Route::get('/ventas/{id}', action: [VentaController::class, 'show'])->name('Ganadero.ventas.show');
 Route::get('/ventas/{id}/edit', action: [VentaController::class, 'edit'])->name('Ganadero.ventas.edit');
 Route::put('/ventas/{id}/update', action: [VentaController::class, 'update'])->name('Ganadero.ventas.update');
@@ -155,7 +157,6 @@ Route::get('/ventasDetallada', [VentaController::class, 'indexDetallada'])->name
 
 // VENTAS GANADO
 Route::get('/ventas/create/Ganado', [VentaGanadoController::class, 'create'])->name('Ganadero.ventas.create');
-Route::post('/ventas_G', action: [VentaGanadoController::class, 'storeG'])->name('Ganadero.ventas.storeG');
 Route::get('/ventas_G/{id}', action: [VentaGanadoController::class, 'showG'])->name('Ganadero.ventas.showG');
 Route::get('/ventas_G/{id}/edit', action: [VentaGanadoController::class, 'editG'])->name('Ganadero.ventas.editG');
 Route::put('/ventas_G/{id}/update', action: [VentaGanadoController::class, 'updateG'])->name('Ganadero.ventas.updateG');
@@ -174,7 +175,23 @@ Route::get('/publicaciones/{id}/edit', action: [PublicacionController::class, 'e
 Route::put('/publicaciones/{id}/update', action: [PublicacionController::class, 'update'])->name('Ganadero.publicaciones.update');
 Route::delete('/publicaciones/{id}/delete', [PublicacionController::class, 'destroy'])->name('Ganadero.publicaciones.destroy');
 
+Route::get('/publicacionesG/create',[PublicacionController::class,'createG'])->name('Ganadero.publicaciones.createG');
+Route::post('/publicacionesG', action: [PublicacionController::class, 'storeG'])->name('Ganadero.publicaciones.storeG');
+Route::get('/publicacionesG/{id}', action: [PublicacionController::class, 'showG'])->name('Ganadero.publicaciones.showG');
+Route::get('/publicacionesG/{id}/edit', action: [PublicacionController::class, 'editG'])->name('Ganadero.publicaciones.editG');
+Route::put('/publicacionesG/{id}/update', action: [PublicacionController::class, 'updateG'])->name('Ganadero.publicaciones.updateG');
+Route::delete('/publicacionesG/{id}/delete', [PublicacionController::class, 'destroyG'])->name('Ganadero.publicaciones.destroyG');
 
+
+
+
+// Rutas usuarios
+Route::get('/usuarios',[UsuarioController::class,'index'])->name('Administrador.usuario.index');
+Route::get('/usuarios/create',[UsuarioController::class,'create'])->name('Administrador.usuario.create');
+Route::post('/usuarios', action: [UsuarioController::class, 'store'])->name('Administrador.usuario.store');
+Route::get('/usuarios/{id}/edit', action: [UsuarioController::class, 'edit'])->name('Administrador.usuario.edit');
+Route::put('/usuarios/{id}/update', action: [UsuarioController::class, 'update'])->name('Administrador.usuario.update');
+Route::delete('/usuarios/{id}/delete', [UsuarioController::class, 'destroy'])->name('Administrador.usuario.destroy');
 
 // RUTAS DASHBOARD
 Route::get('/dashboardGanadero', [DashboardController::class, 'indexGanadero'])->name('Ganadero.dashboard.index');

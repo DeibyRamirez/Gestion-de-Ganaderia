@@ -40,10 +40,21 @@
 
     {{-- Formulario --}}
     <section>
-        <form action="{{ route('Ganadero.publicaciones.store') }}" method="POST" class="space-y-6 bg-white shadow rounded-lg p-6">
+        <form action="{{ route('Ganadero.publicaciones.storeG') }}" method="POST" class="space-y-6 bg-white shadow rounded-lg p-6">
             @csrf
 
             <div class="grid md:grid-cols-2 gap-4">
+
+            {{-- ID del Ganadero --}}
+                <div>
+                    <label for="id_vaca" class="block text-sm font-medium text-gray-700 mb-1"> Animal</label>
+                    <select name="id_vaca" id="id_vaca" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
+                        <option value="">Seleccione una opción</option>
+                        @foreach ($Ganado as $vaca)
+                        <option value="{{ $vaca->id_vaca }}">{{ $vaca->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
                 {{-- ID del Ganadero --}}
                 <div>
@@ -70,24 +81,6 @@
                     class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
             </div>
 
-            {{-- Tipo de Producto --}}
-            <div>
-                <label for="tipo_producto" class="block text-sm font-medium text-gray-700 mb-1">Tipo de Producto</label>
-                <select name="tipo_producto" id="tipo_producto"
-                    class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
-                    <option value="">Seleccione una opción</option>
-                    <option value="leche">Leche</option>
-                    <option value="carne">Carne</option>
-
-                </select>
-            </div>
-
-            {{-- Cantidad --}}
-            <div>
-                <label for="cantidad" class="block text-sm font-medium text-gray-700 mb-1">Cantidad</label>
-                <input type="number" min="1" name="cantidad" id="cantidad" value="{{ old('cantidad') }}"
-                    class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
-            </div>
 
             {{-- Estado --}}
             <input type="hidden" name="estado" value="disponible">

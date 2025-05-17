@@ -16,8 +16,9 @@ class Tratamiento extends Model
     protected $fillable = ['id_gestor', 'id_historial', 'descripcion', 'fecha_tratamiento'];
     public function gestor()
     {
-        return $this->belongsTo(User::class, 'id_usuario');
+        return $this->belongsTo(User::class, 'id_gestor', 'id_usuario');
     }
+
     public function historial()
     {
         return $this->belongsTo(HistorialMedico::class, 'id_historial');

@@ -9,6 +9,18 @@
         @method('PUT')
 
         <div>
+            <label for="id_vaca" class="block text-sm font-medium text-gray-700 mb-1">Nombre del Animal</label>
+            <select name="id_vaca" id="tipo_produccion" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
+                <option value="">Seleccione una opción</option>
+                @foreach ($vacas as $vaca)
+                <option value="{{ $vaca->id_vaca }}" {{ old('id_vaca', $historial_medico->id_vaca) == $vaca->id_vaca ? 'selected' : '' }}>
+                    {{ $vaca->nombre }}
+                </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div>
             <label for="sintomas" class="block text-sm font-medium text-gray-700">Sintomas</label>
             <textarea type="text" name="sintomas" id="sintomas" required
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">{{ old('sintomas', $historial_medico->sintomas) }}</textarea>

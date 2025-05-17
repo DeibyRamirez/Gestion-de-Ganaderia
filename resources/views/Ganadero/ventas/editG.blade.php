@@ -8,12 +8,41 @@
         @csrf
         @method('PUT')
 
+        {{-- ID del Vendedor --}}
         <div>
-            <label for="id_vaca" class="block text-sm font-medium text-gray-700">ID Vaca</label>
-            <select name="id_vaca" id="id_vaca" required
-                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-emerald-500 sm:text-sm">
-                <option value="leche" {{ $venta_g->id_vaca == 'leche' ? 'selected' : '' }}>Leche</option>
-                <option value="carne" {{ $venta_g->id_vaca == 'carne' ? 'selected' : '' }}>Carne</option>
+            <label for="id_vendedor" class="block text-sm font-medium text-gray-700 mb-1"> Vendedor</label>
+            <select name="id_vendedor" id="id_vendedor" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
+                <option value="">Seleccione una opción</option>
+                @foreach ($Ganaderos as $Ganadero)
+                <option value="{{ $Ganadero->id_usuario }}" {{ old('id_vendedor', $venta_g->id_vendedor) == $Ganadero->id_usuario ? 'selected' : '' }}>
+                {{ $Ganadero->name }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        {{-- ID del Comprador --}}
+        <div>
+            <label for="id_comprador" class="block text-sm font-medium text-gray-700 mb-1"> Comprador</label>
+            <select name="id_comprador" id="id_comprador" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
+            <option value="">Seleccione una opción</option>
+            @foreach ($Ganaderos as $Ganadero)
+            <option value="{{ $Ganadero->id_usuario }}" {{ old('id_comprador', $venta_g->id_comprador) == $Ganadero->id_usuario ? 'selected' : '' }}>
+                {{ $Ganadero->name }}
+            </option>
+            @endforeach
+            </select>
+        </div>
+
+        {{-- ID del Ganado --}}
+        <div>
+            <label for="id_vaca" class="block text-sm font-medium text-gray-700 mb-1">ID del animal</label>
+            <select name="id_vaca" id="id_vaca" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
+            <option value="">Seleccione una opción</option>
+            @foreach ($Ganado as $animal)
+            <option value="{{ $animal->id_vaca }}" {{ old('id_vaca', $venta_g->id_vaca) == $animal->id_vaca ? 'selected' : '' }}>
+                {{ $animal->nombre }}
+            </option>
+            @endforeach
             </select>
         </div>
 

@@ -11,6 +11,7 @@
         </div>
 
         <div class="text-gray-700 space-y-2 text-base">
+            <p><strong>Vaca:</strong> {{ $vaca->nombre }}</p>
             <p><strong>ID Vaca:</strong> {{ $alimentacion->id_vaca }}</p>
             <p><strong>Plan Alimenticio:</strong> {{ $alimentacion->plan_alimenticio }}</p>
             <p><strong>Fecha de Inicio:</strong> {{ $alimentacion->fecha_inicio }}</p>
