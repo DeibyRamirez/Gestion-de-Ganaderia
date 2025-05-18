@@ -14,11 +14,29 @@ use Illuminate\Support\Facades\Log;
 class VentaController extends Controller
 {
     public function indexGanadero()
-    {
-        $ventasData = DB::select('CALL ObtenerVentas()');
-        $ventas = collect($ventasData); // Sin mapear a modelo
-        return view('Ganadero.ventas.index',compact('ventas'));
-    }
+{
+    $id = Auth::user()->id_usuario;
+    $ventasData = DB::select('CALL ObtenerVentasMensualesPorGanadero(?)', [$id]);
+    $ventas = collect($ventasData);
+
+    // Prepare data for the chart
+    $chartData = [
+        'meses' => $ventas->pluck('mes')->map(function($mes) {
+            return \Carbon\Carbon::createFromFormat('Y-m', $mes)->format('M Y');
+        })->toArray(),
+        'produccion_leche' => $ventas->pluck('produccion_leche')->toArray(),
+        'venta_leche' => $ventas->pluck('venta_leche')->toArray(),
+        'produccion_carne' => $ventas->pluck('produccion_carne')->toArray(),
+        'venta_carne' => $ventas->pluck('venta_carne')->toArray(),
+        'venta_ganado' => $ventas->pluck('venta_ganado')->toArray(),
+        'total_ventas' => $ventas->pluck('total_ventas')->toArray()
+    ];
+
+    return view('Ganadero.ventas.index', [
+        'ventas' => $ventas,
+        'chartData' => $chartData
+    ]);
+}
 
     public function indexAdministrador()
     {

@@ -9,6 +9,9 @@
                 <h1 class="text-3xl font-bold tracking-tight text-emerald-700">Producción de Leche</h1>
                 <p class="text-muted-foreground">Registros de producción lechera del ganado</p>
             </div>
+            @if (in_array(Auth()->user()->rol, ['administrador', 'ganadero']))
+
+
             <a href="{{ route('Ganadero.produccion.create') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
                 <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -16,6 +19,7 @@
                 </svg>
                 Nuevo Registro
             </a>
+            @endif
         </div>
 
         <div class="text-center mb-6">
@@ -59,12 +63,15 @@
                         <td class="py-2 px-4">{{ \Carbon\Carbon::parse($registro->fecha)->format('d/m/Y') }}</td>
                         <td class="py-2 px-4 space-x-2 flex flex-wrap">
                             <a href="{{ route('Ganadero.produccion.show', $registro->id_produccion) }}" class="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700">Ver</a>
+                            @if (in_array(Auth()->user()->rol, ['administrador', 'ganadero']))
+
                             <a href="{{ route('Ganadero.produccion.edit', $registro->id_produccion) }}" class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Editar</a>
                             <form action="{{ route('Ganadero.produccion.destroy', $registro->id_produccion)}}" method="POST" onsubmit="return confirm('¿Está seguro de que desea eliminar esta publicación?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">Eliminar</button>
                             </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach
@@ -111,12 +118,14 @@
                         <td class="py-2 px-4">{{ \Carbon\Carbon::parse($registro->fecha)->format('d/m/Y') }}</td>
                         <td class="py-2 px-4 space-x-2 flex flex-wrap">
                             <a href="{{ route('Ganadero.produccion.show', $registro->id_produccion) }}" class="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700">Ver</a>
+                            @if (in_array(Auth()->user()->rol, ['administrador', 'ganadero']))
                             <a href="{{ route('Ganadero.produccion.edit', $registro->id_produccion) }}" class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Editar</a>
                             <form action="{{ route('Ganadero.produccion.destroy', $registro->id_produccion)}}" method="POST" onsubmit="return confirm('¿Está seguro de que desea eliminar esta publicación?');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">Eliminar</button>
                             </form>
+                            @endif
                         </td>
                     </tr>
                     @endforeach

@@ -5,45 +5,50 @@
   {{-- Encabezado --}}
   <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
     <div>
-      <h1 class="text-4xl font-bold text-gray-800">Gestión de Tratamientos y Reportes</h1>
+      <h1 class="text-4xl font-bold text-emerald-700">Gestión de Tratamientos y Reportes</h1>
       <p class="text-gray-500 mt-1">Visualiza los tratamientos aplicados y genera reportes fácilmente.</p>
     </div>
-    <div class="flex items-center space-x-4">
-      @foreach([
-      ['route' => 'Ganadero.tratamientosReportes.createTratamiento', 'label' => 'Nuevo Tratamiento'],
-      ['route' => 'Ganadero.tratamientosReportes.createReporte', 'label' => 'Nuevo Reporte']
-      ] as $btn)
-      <a href="{{ route($btn['route']) }}"
-        class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
-        <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10"></circle>
-          <path d="M8 12h8M12 8v8"></path>
-        </svg>
-        {{ $btn['label'] }}
+    @if (in_array(Auth()->user()->rol, ['administrador', 'gestor']))
+    <div class="flex gap-3">
+      <a href="{{ route('Ganadero.tratamientosReportes.createTratamiento') }}"
+        class="px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
+        + Nueva Tratamiento
       </a>
-      @endforeach
+      <a href="{{ route('Ganadero.tratamientosReportes.createR') }}"
+        class="px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
+        + Nueva Reporte
+      </a>
     </div>
+    @endif
   </div>
+  
+
 
   {{-- Mensajes --}}
   <div class="text-center mb-6">
-    @foreach (['success' => 'green', 'error' => 'red'] as $msg => $color)
-    @if (session($msg))
-    <div id="{{ $msg }}-mensaje" class="bg-{{ $color }}-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
-      {{ session($msg) }}
+
+
+    @if (session('success'))
+    <div id="success-mensaje" class="bg-green-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+      {{ session('success') }}
     </div>
     @endif
-    @endforeach
+
+    @if (session('error'))
+    <div id="error-mensaje" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+      {{ session('error') }}
+    </div>
+    @endif
   </div>
 
   {{-- Sección de Tratamientos --}}
   <section>
-    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Tratamientos Registrados</h2>
+    <h2 class="text-2xl font-semibold text-emerald-700 mb-4">Tratamientos Registrados</h2>
     <div class="overflow-x-auto">
       <div class="flex gap-6 flex-nowrap w-max pr-4">
         @foreach($tratamientos as $tratamiento)
         <div class="bg-white shadow rounded-lg p-5 hover:shadow-md transition">
-          <h3 class="text-lg font-bold text-emerald-700">Tratamiento #{{ $tratamiento->id_tratamiento }}</h3>
+          <h3 class="text-lg font-bold text-gray-800">Tratamiento #{{ $tratamiento->id_tratamiento }}</h3>
           <p class="text-sm text-gray-600 mt-1">Gestor: <span class="font-medium">{{ $tratamiento->gestor->name ?? 'Nombre no disponible' }}</span></p>
           <p class="text-sm text-gray-600">Historial ID: <span class="font-medium">{{ $tratamiento->id_historial }}</span></p>
           <p class="text-sm text-gray-600 mt-2"><strong>Descripción:</strong> {{ $tratamiento->descripcion }}</p>
@@ -76,7 +81,8 @@
 
 {{-- Sección de Reportes --}}
 <section>
-  <h2 class="text-2xl font-semibold text-gray-800 mb-4">Reportes Generados</h2>
+  <br class="my-6">
+  <h2 class="text-2xl font-semibold text-emerald-700 mb-4">Reportes Generados</h2>
   <div class="overflow-x-auto">
     <div class="flex gap-6 flex-nowrap w-max pr-4">
       @foreach($reportes as $reporte)

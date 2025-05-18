@@ -11,12 +11,26 @@ use Illuminate\Support\Facades\Log;
 
 class ProduccionController extends Controller
 {
-    public function indexGanadero()
-    {
+   public function indexGanadero()
+{
+    $id = Auth::user()->id_usuario;
+    $produccionData = DB::select('CALL ObtenerProduccionMensualPorGanadero(?)', [$id]);
+    $produccion = collect($produccionData);
 
-        return view('Ganadero.produccion.index');
-    }
+    // Prepare data for the chart
+    $chartData = [
+        'meses' => $produccion->pluck('mes')->map(function($mes) {
+            return \Carbon\Carbon::createFromFormat('Y-m', $mes)->format('M Y');
+        })->toArray(),
+        'leche' => $produccion->pluck('total_leche')->toArray(),
+        'carne' => $produccion->pluck('total_carne')->toArray()
+    ];
 
+    return view('Ganadero.produccion.index', [
+        'produccion' => $produccion,
+        'chartData' => $chartData
+    ]);
+}
     public function indexAdministrador()
     {
         $produccionData = DB::select('CALL ObtenerProduccion()');
@@ -59,14 +73,14 @@ class ProduccionController extends Controller
                 $request->fecha,
             ]);
             if (Auth::user()->rol == 'ganadero') {
-                return redirect()->route('Ganadero.produccion.index')->with('success', 'Producción creada con éxito.');
+                return redirect()->route('Ganadero.produccion.indexDetallada')->with('success', 'Producción creada con éxito.');
             } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
                 return redirect()->route('Administrador.produccion.index')->with('success', 'Producción creada con éxito.');
             }
         } catch (\Throwable $th) {
             Log::error('Error al crear la Producción: ' . $th->getMessage());
             if (Auth::user()->rol == 'ganadero') {
-                return redirect()->route('Ganadero.produccion.index')->with('error', 'Error al crear la Producción.')->withInput();
+                return redirect()->route('Ganadero.produccion.indexDetallada')->with('error', 'Error al crear la Producción.')->withInput();
             } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
                 return redirect()->route('Administrador.produccion.index')->with('error', 'Error al crear la Producción.')->withInput();
             }
@@ -98,14 +112,14 @@ class ProduccionController extends Controller
                 $request->fecha,
             ]);
             if (Auth::user()->rol == 'ganadero') {
-                return redirect()->route('Ganadero.produccion.index')->with('success', 'Producción actualizada con éxito.');
+                return redirect()->route('Ganadero.produccion.indexDetallada')->with('success', 'Producción actualizada con éxito.');
             } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
                 return redirect()->route('Administrador.produccion.index')->with('success', 'Producción actualizada con éxito.');
             }
         } catch (\Throwable $th) {
             Log::error('Error al actualizar la Producción: ' . $th->getMessage());
             if (Auth::user()->rol == 'ganadero') {
-                return redirect()->route('Ganadero.produccion.index')->with('error', 'Error al actualizar la Producción.')->withInput();
+                return redirect()->route('Ganadero.produccion.indexDetallada')->with('error', 'Error al actualizar la Producción.')->withInput();
             } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
                 return redirect()->route('Administrador.produccion.index')->with('error', 'Error al actualizar la Producción.')->withInput();
             }
@@ -118,14 +132,14 @@ class ProduccionController extends Controller
             // Proceso almacenado para eliminar ganado
             DB::statement('CALL EliminarProduccion(?)', [$id]);
             if (Auth::user()->rol == 'ganadero') {
-                return redirect()->route('Ganadero.produccion.index')->with('success', 'Producción eliminada con éxito.');
+                return redirect()->route('Ganadero.produccion.indexDetallada')->with('success', 'Producción eliminada con éxito.');
             } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
                 return redirect()->route('Administrador.produccion.index')->with('success', 'Producción eliminada con éxito.');
             }
         } catch (\Throwable $th) {
             Log::error('Error al eliminar la Producción: ' . $th->getMessage());
             if (Auth::user()->rol == 'ganadero') {
-                return redirect()->route('Ganadero.produccion.index')->with('error', 'Error al eliminar la Producción.')->withInput();
+                return redirect()->route('Ganadero.produccion.indexDetallada')->with('error', 'Error al eliminar la Producción.')->withInput();
             } elseif (in_array(Auth::user()->rol, ['gestor', 'administrador'])) {
                 return redirect()->route('Administrador.produccion.index')->with('error', 'Error al eliminar la Producción.')->withInput();
             }

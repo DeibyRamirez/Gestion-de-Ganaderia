@@ -10,7 +10,7 @@
             <p class="text-gray-500 mt-1">Completa la información de la transacción.</p>
         </div>
         @if (Auth()->user()->rol === 'ganadero')
-        <a href="{{ route('Ganadero.ventas.index') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
+        <a href="{{ route('Ganadero.ventas.indexDetallada') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
             <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path d="M15 18l-6-6 6-6" />
             </svg>
@@ -35,23 +35,21 @@
 
             <div class="grid md:grid-cols-2 gap-4">
                 {{-- ID del Vendedor --}}
+               
+                <input type="hidden" name="id_vendedor" id="id_vendedor" value="{{ Auth()->user()->id_usuario }}">
                 <div>
-                    <label for="id_vendedor" class="block text-sm font-medium text-gray-700 mb-1"> Vendedor</label>
-                    <select name="id_vendedor" id="id_vendedor" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
-                        <option value="">Seleccione una opción</option>
-                        @foreach ($Ganaderos as $Ganadero)
-                        <option value="{{ $Ganadero->id_usuario }}">{{ $Ganadero->name }}</option>
-                        @endforeach
-                    </select>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Vendedor</label>
+                    <input type="text" class="w-full border-gray-300 rounded-md shadow-sm bg-gray-100" value="{{ Auth()->user()->name }}" readonly>
                 </div>
-
                 {{-- ID del Comprador --}}
                 <div>
-                    <label for="id_comprador" class="block text-sm font-medium text-gray-700 mb-1"> Comprador</label>
+                    <label for="id_comprador" class="block text-sm font-medium text-gray-700 mb-1">Comprador</label>
                     <select name="id_comprador" id="id_comprador" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
                         <option value="">Seleccione una opción</option>
                         @foreach ($Ganaderos as $Ganadero)
-                        <option value="{{ $Ganadero->id_usuario }}">{{ $Ganadero->name }}</option>
+                            @if ($Ganadero->id_usuario != Auth()->user()->id_usuario)
+                                <option value="{{ $Ganadero->id_usuario }}">{{ $Ganadero->name }}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>

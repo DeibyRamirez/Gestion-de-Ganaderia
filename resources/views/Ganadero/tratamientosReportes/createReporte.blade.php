@@ -32,19 +32,10 @@
         <form action="{{ route('Ganadero.tratamientosReportes.storeR') }}" method="POST" class="space-y-6">
             @csrf
 
-            <div class="grid md:grid-cols-2 gap-4">
-                {{-- ID del Gestor --}}
-                <div>
-                    <label for="id_gestor" class="block text-sm font-medium text-gray-700 mb-1"> Gestor</label>
-                    <select name="id_gestor" id="id_gestor" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                        <option value="">Seleccione una opción</option>
-                        @foreach ($Gestores as $gestor)
-                            <option value="{{ $gestor->id_usuario }}">{{ $gestor->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-
+            <div >
+                <label for="id_gestor" class="block text-sm font-medium text-gray-700 mb-1">Gestor</label>
+                <input type="text" id="id_gestor_display" value="{{ Auth()->user()->name }}" class="w-full border-gray-300 rounded-md shadow-sm bg-gray-100" disabled>
+                <input type="hidden" name="id_gestor" id="id_gestor" value="{{ Auth()->user()->id_usuario }}">
             </div>
 
             {{-- Descripcion Reporte --}}

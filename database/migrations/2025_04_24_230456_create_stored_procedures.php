@@ -815,6 +815,135 @@ class CreateStoredProcedures extends Migration
         WHERE producto = "carne";
     END
 ');
+
+        DB::unprepared('
+        DROP PROCEDURE IF EXISTS ObtenerProduccionMensualPorGanadero;
+        
+
+    CREATE PROCEDURE ObtenerProduccionMensualPorGanadero(IN p_id_usuario INT)
+    BEGIN
+        SELECT 
+            DATE_FORMAT(p.fecha, "%Y-%m") AS mes,
+            SUM(CASE WHEN p.tipo_produccion = "leche" THEN p.cantidad ELSE 0 END) AS total_leche,
+            SUM(CASE WHEN p.tipo_produccion = "carne" THEN p.cantidad ELSE 0 END) AS total_carne
+        FROM 
+            produccion p
+        INNER JOIN ganado g ON p.id_vaca = g.id_vaca
+        WHERE 
+            g.id_ganadero = p_id_usuario
+        GROUP BY 
+            DATE_FORMAT(p.fecha, "%Y-%m")
+        ORDER BY 
+            mes;
+    END
+
+
+        ');
+
+        DB::unprepared('
+            DROP PROCEDURE IF EXISTS ObtenerVentasMensualesPorGanadero;
+        
+    CREATE PROCEDURE ObtenerVentasMensualesPorGanadero(IN p_id_usuario INT)
+    BEGIN
+        -- Temporary table to store all monthly sales data
+        CREATE TEMPORARY TABLE IF NOT EXISTS temp_ventas_mensuales (
+            mes VARCHAR(7),
+            venta_leche DECIMAL(12,2) DEFAULT 0,
+            venta_carne DECIMAL(12,2) DEFAULT 0,
+            venta_ganado DECIMAL(12,2) DEFAULT 0,
+            total_ventas DECIMAL(12,2) DEFAULT 0
+        );
+        
+        -- Insert milk and meat sales from ventas table
+        INSERT INTO temp_ventas_mensuales (mes, venta_leche, venta_carne, total_ventas)
+        SELECT 
+            DATE_FORMAT(v.fecha_venta, "%Y-%m") AS mes,
+            SUM(CASE WHEN v.producto = "leche" THEN v.cantidad * v.precio ELSE 0 END) AS venta_leche,
+            SUM(CASE WHEN v.producto = "carne" THEN v.cantidad * v.precio ELSE 0 END) AS venta_carne,
+            SUM(v.cantidad * v.precio) AS total_ventas
+        FROM 
+            ventas v
+        INNER JOIN ganado g ON v.id_vendedor = p_id_usuario
+        WHERE 
+            v.id_vendedor = p_id_usuario
+        GROUP BY 
+            DATE_FORMAT(v.fecha_venta, "%Y-%m");
+        
+        -- Insert cattle sales from ventas_ganado table
+        INSERT INTO temp_ventas_mensuales (mes, venta_ganado, total_ventas)
+        SELECT 
+            DATE_FORMAT(vg.fecha_venta, "%Y-%m") AS mes,
+            SUM(vg.precio) AS venta_ganado,
+            SUM(vg.precio) AS total_ventas
+        FROM 
+            ventas_ganado vg
+        INNER JOIN ganado g ON vg.id_vaca = g.id_vaca
+        WHERE 
+            g.id_ganadero = p_id_usuario
+        GROUP BY 
+            DATE_FORMAT(vg.fecha_venta, "%Y-%m")
+        ON DUPLICATE KEY UPDATE
+            venta_ganado = VALUES(venta_ganado),
+            total_ventas = total_ventas + VALUES(total_ventas);
+        
+        -- Combine with production data and return final result
+        SELECT 
+            COALESCE(v.mes, p.mes) AS mes,
+            IFNULL(p.total_leche, 0) AS produccion_leche,
+            IFNULL(v.venta_leche, 0) AS venta_leche,
+            IFNULL(p.total_carne, 0) AS produccion_carne,
+            IFNULL(v.venta_carne, 0) AS venta_carne,
+            IFNULL(v.venta_ganado, 0) AS venta_ganado,
+            IFNULL(v.total_ventas, 0) AS total_ventas
+        FROM 
+            temp_ventas_mensuales v
+        LEFT JOIN (
+            SELECT 
+                DATE_FORMAT(p.fecha, "%Y-%m") AS mes,
+                SUM(CASE WHEN p.tipo_produccion = "leche" THEN p.cantidad ELSE 0 END) AS total_leche,
+                SUM(CASE WHEN p.tipo_produccion = "carne" THEN p.cantidad ELSE 0 END) AS total_carne
+            FROM 
+                produccion p
+            INNER JOIN ganado g ON p.id_vaca = g.id_vaca
+            WHERE 
+                g.id_ganadero = p_id_usuario
+            GROUP BY 
+                DATE_FORMAT(p.fecha, "%Y-%m")
+        ) p ON v.mes = p.mes
+        
+        UNION
+        
+        SELECT 
+            COALESCE(p.mes, v.mes) AS mes,
+            IFNULL(p.total_leche, 0) AS produccion_leche,
+            IFNULL(v.venta_leche, 0) AS venta_leche,
+            IFNULL(p.total_carne, 0) AS produccion_carne,
+            IFNULL(v.venta_carne, 0) AS venta_carne,
+            IFNULL(v.venta_ganado, 0) AS venta_ganado,
+            IFNULL(v.total_ventas, 0) AS total_ventas
+        FROM 
+            (
+                SELECT 
+                    DATE_FORMAT(p.fecha, "%Y-%m") AS mes,
+                    SUM(CASE WHEN p.tipo_produccion = "leche" THEN p.cantidad ELSE 0 END) AS total_leche,
+                    SUM(CASE WHEN p.tipo_produccion = "carne" THEN p.cantidad ELSE 0 END) AS total_carne
+                FROM 
+                    produccion p
+                INNER JOIN ganado g ON p.id_vaca = g.id_vaca
+                WHERE 
+                    g.id_ganadero = p_id_usuario
+                GROUP BY 
+                    DATE_FORMAT(p.fecha, "%Y-%m")
+            ) p
+        LEFT JOIN temp_ventas_mensuales v ON p.mes = v.mes
+        WHERE v.mes IS NULL
+        
+        ORDER BY mes;
+        
+        -- Clean up
+        DROP TEMPORARY TABLE IF EXISTS temp_ventas_mensuales;
+    END
+');
     }
 
     /**
@@ -886,6 +1015,7 @@ class CreateStoredProcedures extends Migration
             'Total_Gestores',
             'Total_Leche',
             'Total_Carne',
+            'ObtenerProduccionMensualPorGanadero'
         ];
 
         foreach ($procedures as $procedure) {

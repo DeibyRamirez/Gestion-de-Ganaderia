@@ -9,6 +9,7 @@
             <h1 class="text-3xl font-bold tracking-tight text-emerald-700">Publicaciones de Ganaderos</h1>
             <p class="text-muted-foreground text-gray-600">Explore todas las publicaciones realizadas por los ganaderos registrados en el sistema.</p>
         </div>
+        @if (in_array(Auth()->user()->rol, ['administrador', 'ganadero']))
         <div class="flex space-x-2">
             <a href="{{ route('Ganadero.publicaciones.create') }}" class="inline-flex items-center px-4 py-2 bg-emerald-600 text-white rounded shadow hover:bg-emerald-700">
                 + Publicación Producto
@@ -17,6 +18,7 @@
                 + Publicación Ganado
             </a>
         </div>
+        @endif
     </div>
 
     {{-- Mensajes de éxito / error --}}
@@ -71,11 +73,14 @@
                             </td>
                             <td class="py-2 px-4 space-x-2 text-center">
                                 <a href="{{ route('Ganadero.publicaciones.show', $publicacion->id_publicacion) }}" class="text-sm bg-gray-600 text-white px-2 py-1 rounded hover:bg-gray-700">Ver</a>
+                                @if (in_array(Auth()->user()->rol, ['administrador', 'ganadero']))
+                                
                                 <a href="{{ route('Ganadero.publicaciones.edit', $publicacion->id_publicacion) }}" class="text-sm bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700">Editar</a>
                                 <form action="{{ route('Ganadero.publicaciones.destroy', $publicacion->id_publicacion) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Eliminar esta publicación?');">
                                     @csrf @method('DELETE')
                                     <button class="text-sm bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">Eliminar</button>
                                 </form>
+                                @endif
                             </td>
                         </tr>
                         @endforeach
@@ -124,11 +129,13 @@
                             </td>
                             <td class="py-2 px-4 space-x-2 text-center">
                                 <a href="{{ route('Ganadero.publicaciones.showG', $publicacionG->id_publicacion) }}" class="text-sm bg-gray-600 text-white px-2 py-1 rounded hover:bg-gray-700">Ver</a>
+                                @if (in_array(Auth()->user()->rol, ['administrador', 'ganadero']))
                                 <a href="{{ route('Ganadero.publicaciones.editG', $publicacionG->id_publicacion) }}" class="text-sm bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700">Editar</a>
                                 <form action="{{ route('Ganadero.publicaciones.destroyG', $publicacionG->id_publicacion) }}" method="POST" class="inline-block" onsubmit="return confirm('¿Eliminar esta publicación?');">
                                     @csrf @method('DELETE')
                                     <button class="text-sm bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700">Eliminar</button>
                                 </form>
+                                @endif
                             </td>
                         </tr>
                         @endforeach

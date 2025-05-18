@@ -28,7 +28,9 @@
                     <select name="id_historial" id="id_historial" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="">Seleccione una opción</option>
                         @foreach ($historiales as $historial)
-                        <option value="{{ $historial->id_historial }}">{{ $historial->id_historial }}</option>
+                        <option value="{{ $historial->id_historial }}" {{ (old('id_historial', $tratamiento->id_historial) == $historial->id_historial) ? 'selected' : '' }}>
+                            {{ $historial->id_historial }}
+                        </option>
                         @endforeach
                     </select>
                 </div>

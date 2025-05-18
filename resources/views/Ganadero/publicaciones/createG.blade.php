@@ -45,7 +45,7 @@
 
             <div class="grid md:grid-cols-2 gap-4">
 
-            {{-- ID del Ganadero --}}
+                {{-- ID del Ganadero --}}
                 <div>
                     <label for="id_vaca" class="block text-sm font-medium text-gray-700 mb-1"> Animal</label>
                     <select name="id_vaca" id="id_vaca" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
@@ -58,13 +58,9 @@
 
                 {{-- ID del Ganadero --}}
                 <div>
-                    <label for="id_ganadero" class="block text-sm font-medium text-gray-700 mb-1"> Ganadero</label>
-                    <select name="id_ganadero" id="id_ganadero" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
-                        <option value="">Seleccione una opción</option>
-                        @foreach ($Ganaderos as $Ganadero)
-                        <option value="{{ $Ganadero->id_usuario }}">{{ $Ganadero->name }}</option>
-                        @endforeach
-                    </select>
+                    <label for="id_ganadero" class="block text-sm font-medium text-gray-700 mb-1">Ganadero</label>
+                    <input type="text" value="{{ Auth()->user()->name }}" class="w-full border-gray-300 rounded-md shadow-sm bg-gray-100" readonly>
+                    <input type="hidden" name="id_ganadero" id="id_ganadero" value="{{ Auth()->user()->id }}">
                 </div>
             </div>
             {{-- Descripción --}}
@@ -91,14 +87,14 @@
                 <input type="date" name="fecha" id="fecha" value="{{ old('fecha', date('Y-m-d')) }}"
                     class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
             </div>
-</div>
 
-<div class="flex justify-end">
-    <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-md shadow">
-        Guardar Publicación
-    </button>
-</div>
-</form>
-</section>
+
+            <div class="flex justify-end">
+                <button type="submit" class="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-2 rounded-md shadow">
+                    Guardar Publicación
+                </button>
+            </div>
+        </form>
+    </section>
 </div>
 @endsection

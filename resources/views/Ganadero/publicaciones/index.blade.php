@@ -22,22 +22,26 @@
         </div>
     </div>
 
-    @if (session('success'))
-    <div class="bg-green-500 text-white font-semibold px-4 py-2 rounded-md shadow text-center">
-        {{ session('success') }}
-    </div>
-    @endif
+    <div class="text-center mb-6">
 
-    @if (session('error'))
-    <div class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md shadow text-center">
-        {{ session('error') }}
+
+        @if (session('success'))
+        <div id="success-mensaje" class="bg-green-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+            {{ session('success') }}
+        </div>
+        @endif
+
+        @if (session('error'))
+        <div id="error-mensaje" class="bg-red-500 text-white font-semibold px-4 py-2 rounded-md shadow mt-4">
+            {{ session('error') }}
+        </div>
+        @endif
     </div>
-    @endif
 
     {{-- Publicaciones de Producción --}}
     {{-- Publicaciones de Producción --}}
     <div>
-        <h2 class="text-2xl font-semibold text-emerald-800 mb-4">Producción</h2>
+        <h2 class="text-2xl font-semibold text-emerald-700 mb-4">Producción</h2>
         <div class="flex gap-6 overflow-x-auto pb-4">
             @foreach ($publicaciones as $publicacion)
             <div class="min-w-[300px] max-w-[300px] bg-white rounded-2xl shadow-lg p-6 border flex-shrink-0">

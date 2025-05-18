@@ -36,23 +36,21 @@
 
             <div class="grid md:grid-cols-2 gap-4">
                 {{-- ID del Vendedor --}}
+                <input type="hidden" name="id_vendedor" id="id_vendedor" value="{{ Auth()->user()->id_usuario }}">
                 <div>
-                    <label for="id_vendedor" class="block text-sm font-medium text-gray-700 mb-1"> Vendedor</label>
-                    <select name="id_vendedor" id="id_vendedor" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
-                        <option value="">Seleccione una opción</option>
-                        @foreach ($Ganaderos as $Ganadero)
-                        <option value="{{ $Ganadero->id_usuario }}">{{ $Ganadero->name }}</option>
-                        @endforeach
-                    </select>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Vendedor</label>
+                    <input type="text" class="w-full border-gray-300 rounded-md shadow-sm bg-gray-100" value="{{ Auth()->user()->name }}" readonly>
                 </div>
 
                 {{-- ID del Comprador --}}
                 <div>
-                    <label for="id_comprador" class="block text-sm font-medium text-gray-700 mb-1"> Comprador</label>
+                    <label for="id_comprador" class="block text-sm font-medium text-gray-700 mb-1">Comprador</label>
                     <select name="id_comprador" id="id_comprador" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
                         <option value="">Seleccione una opción</option>
                         @foreach ($Ganaderos as $Ganadero)
-                        <option value="{{ $Ganadero->id_usuario }}">{{ $Ganadero->name }}</option>
+                            @if ($Ganadero->id_usuario != Auth()->user()->id_usuario )
+                                <option value="{{ $Ganadero->id_usuario }}">{{ $Ganadero->name }}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>

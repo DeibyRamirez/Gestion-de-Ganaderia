@@ -8,56 +8,53 @@
             <h1 class="text-4xl font-bold text-gray-800">Registrar Tratamiento</h1>
             <p class="text-gray-500 mt-1">Ingresa los datos del tratamiento aplicado al animal.</p>
         </div>
+
         @if (Auth()->user()->rol === 'ganadero')
-        <a href="{{ route('Ganadero.tratamientosReportes.index') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
-            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M15 18l-6-6 6-6" />
-            </svg>
-            Volver a Tratamientos
-        </a>
+            <a href="{{ route('Ganadero.tratamientosReportes.index') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
+                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+                Volver a Tratamientos
+            </a>
         @endif
 
         @if (in_array(Auth()->user()->rol, ['administrador','gestor']))
-        <a href="{{ route('Administrador.tratamientosReportes.index') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
-            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path d="M15 18l-6-6 6-6" />
-            </svg>
-            Volver a Tratamientos
-        </a>
+            <a href="{{ route('Administrador.tratamientosReportes.index') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
+                <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+                Volver a Tratamientos
+            </a>
         @endif
     </div>
 
     {{-- Recuadro del formulario --}}
-    <section class="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow-md">
+    <section class="bg-white border border-gray-200 rounded-xl p-6 shadow-md">
         <form action="{{ route('Ganadero.tratamientosReportes.store') }}" method="POST" class="space-y-6">
             @csrf
 
-            <div class="grid md:grid-cols-2 gap-4">
-                {{-- ID del Gestor --}}
-                <div>
-                    <label for="id_gestor" class="block text-sm font-medium text-gray-700 mb-1">ID del Gestor</label>
-                    <select name="id_gestor" id="id_gestor" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
-                        <option value="">Seleccione una opción</option>
-                        @foreach ($Gestores as $gestor)
-                        <option value="{{ $gestor->id_usuario}}">{{ $gestor->name }}</option>
-                        @endforeach
-
-                    </select>
+            {{-- ID del Gestor --}}
+            <div class="flex flex-col md:flex-row md:space-x-6">
+                {{-- Gestor --}}
+                <div class="w-full md:w-1/2">
+                    <label for="id_gestor_display" class="block text-sm font-medium text-gray-700 mb-1">Gestor</label>
+                    <input type="text" id="id_gestor_display" value="{{ Auth()->user()->name }}" class="w-full border-gray-300 rounded-md shadow-sm bg-gray-100" disabled>
+                    <input type="hidden" name="id_gestor" value="{{ Auth()->user()->id_usuario }}">
                 </div>
 
                 {{-- ID del Historial --}}
-                <div>
+                <div class="w-full md:w-1/2 mt-4 md:mt-0">
                     <label for="id_historial" class="block text-sm font-medium text-gray-700 mb-1">ID del Historial</label>
                     <select name="id_historial" id="id_historial" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500">
                         <option value="">Seleccione una opción</option>
                         @foreach ($historiales as $historial)
-                        <option value="{{ $historial->id_historial }}">{{ $historial->id_historial }}</option>
+                            <option value="{{ $historial->id_historial }}">{{ $historial->id_historial }}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
 
-            {{-- Descripcion aplicado --}}
+            {{-- Descripción --}}
             <div>
                 <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-1">Tratamiento Aplicado</label>
                 <textarea name="descripcion" id="descripcion" rows="4" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" placeholder="Describe el tratamiento aplicado..."></textarea>

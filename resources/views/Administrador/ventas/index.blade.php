@@ -9,6 +9,8 @@
             <h1 class="text-4xl font-bold text-emerald-700">Registro de las Ventas Ganado</h1>
         </div>
 
+        @if (in_array(Auth()->user()->rol, ['administrador', 'ganadero']))
+
 
         <a href="{{ route('Ganadero.ventas.create') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
             <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -17,7 +19,7 @@
             </svg>
             Nueva Venta Ganado
         </a>
-
+        @endif
     </div>
 
     <div class="text-center mb-6">
@@ -62,12 +64,16 @@
                     <td class="py-2 px-4 border-b text-sm text-gray-600">{{ $venta_g->id_comprador }}</td>
                     <td class="py-2 px-4 space-x-2 flex flex-wrap">
                         <a href="{{ route('Ganadero.ventas.showG', $venta_g->id_venta) }}" class="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700">Ver</a>
+                        @if (in_array(Auth()->user()->rol, ['administrador', 'ganadero']))
+                        
+                       
                         <a href="{{ route('Ganadero.ventas.editG', $venta_g->id_venta) }}" class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Editar</a>
                         <form action="{{ route('Ganadero.ventas.destroyG', $venta_g->id_venta) }}" method="POST" onsubmit="return confirm('¿Está seguro de que desea eliminar esta publicación?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">Eliminar</button>
                         </form>
+                         @endif
                     </td>
                 </tr>
                 @endforeach
@@ -85,7 +91,7 @@
         <div>
             <h1 class="text-4xl font-bold text-emerald-700">Registro de Ventas de la Producción</h1>
         </div>
-
+        @if (in_array(Auth()->user()->rol, ['administrador', 'ganadero']))
         <a href="{{ route('Ganadero.ventas.createProduccion') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
             <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <circle cx="12" cy="12" r="10"></circle>
@@ -93,7 +99,7 @@
             </svg>
             Nueva Venta Producción
         </a>
-
+        @endif
     </div>
 
     <!-- Tabla de Ventas de Producción -->
@@ -124,12 +130,14 @@
                     <td class="py-2 px-4 border-b text-sm text-gray-600">{{ $venta->id_comprador }}</td>
                     <td class="py-2 px-4 space-x-2 flex flex-wrap">
                         <a href="{{ route('Ganadero.ventas.show', $venta->id_venta) }}" class="px-3 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700">Ver</a>
+                        @if (in_array(Auth()->user()->rol, ['administrador', 'ganadero']))
                         <a href="{{ route('Ganadero.ventas.edit', $venta->id_venta) }}" class="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">Editar</a>
                         <form action="{{ route('Ganadero.ventas.destroy', $venta->id_venta) }}" method="POST" onsubmit="return confirm('¿Está seguro de que desea eliminar esta publicación?');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="px-3 py-1 text-sm bg-red-600 text-white rounded hover:bg-red-700">Eliminar</button>
                         </form>
+                        @endif
                     </td>
                 </tr>
                 @endforeach
