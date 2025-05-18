@@ -63,6 +63,7 @@
           class="inline-flex items-center justify-center px-3 py-1.5 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition text-sm">
           Ver
         </a>
+        
         <a href="{{ route('Ganadero.ganado.edit', $vaca->id_vaca) }}"
           class="inline-flex items-center justify-center px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition text-sm">
           Editar

@@ -13,11 +13,12 @@ class ReporteController extends Controller
 {
     public function index()
     {
-        $reportesData = DB::select('CALL ObtenerReportes()');
-        $reportes = collect($reportesData); // Sin mapear a modelo
-        $Gestores = Reporte::with('gestor')->get(); // si también usas gestor en reportes
+        // $usuario = Auth::user()->id_usuario;
+        // $reportesData = DB::select('CALL ObtenerReportesGanadero(?)', [$usuario]);
+        // $reportes = collect($reportesData); // Sin mapear a modelo
+        // $Gestores = Reporte::with('gestor')->get(); // si también usas gestor en reportes
 
-        return view('Ganadero.tratamientosReportes.index', compact('reportes'));
+        // return view('Ganadero.tratamientosReportes.index', compact('reportes'));
     }
 
     public function createR()

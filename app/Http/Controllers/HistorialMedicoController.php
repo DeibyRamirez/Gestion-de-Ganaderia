@@ -13,7 +13,8 @@ class HistorialMedicoController extends Controller
 {
     public function indexGanadero()
     {
-        $hitorialData = DB::select('CALL ObtenerHistorialMedico()');
+        $usuario = Auth::user()->id_usuario;
+        $hitorialData = DB::select('CALL ObtenerHistorialMedicoGanadero(?)', [$usuario]);
         $historial_medico = collect($hitorialData); // Sin mapear a modelo
         $vacas = Ganado::all();
         return view('Ganadero.historial.index', compact('historial_medico', 'vacas'));

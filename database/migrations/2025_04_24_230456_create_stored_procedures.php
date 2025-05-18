@@ -91,6 +91,14 @@ class CreateStoredProcedures extends Migration
         ');
 
         DB::unprepared('
+            DROP PROCEDURE IF EXISTS ObtenerGanadoGanadero;
+            CREATE PROCEDURE ObtenerGanadoGanadero(in p_id_ganadero INT)
+            BEGIN
+                SELECT * FROM ganado where id_ganadero = p_id_ganadero;
+            END
+        ');
+
+        DB::unprepared('
             DROP PROCEDURE IF EXISTS ObtenerGanadoId;
             CREATE PROCEDURE ObtenerGanadoId(IN p_id_vaca INT)
             BEGIN
@@ -157,6 +165,14 @@ class CreateStoredProcedures extends Migration
         ');
 
         DB::unprepared('
+            DROP PROCEDURE IF EXISTS ObtenerAlimentoGanadero;
+            CREATE PROCEDURE ObtenerAlimentoGanadero(in p_id_ganadero INT)
+            BEGIN
+                SELECT * FROM alimentacion join ganado g on g.id_vaca = alimentacion.id_vaca where g.id_ganadero = p_id_ganadero;
+            END
+        ');
+
+        DB::unprepared('
             DROP PROCEDURE IF EXISTS ObtenerAlimentoId;
             CREATE PROCEDURE ObtenerAlimentoId(IN p_id_alimentacion INT)
             BEGIN
@@ -214,6 +230,15 @@ class CreateStoredProcedures extends Migration
             BEGIN
                 SELECT * FROM historial_medico;
             END
+        ');
+
+        DB::unprepared('
+            DROP PROCEDURE IF EXISTS ObtenerHistorialMedicoGanadero;
+            CREATE PROCEDURE ObtenerHistorialMedicoGanadero(in p_id_ganadero INT)
+            BEGIN
+                SELECT * FROM historial_medico join ganado g on g.id_vaca = historial_medico.id_vaca where g.id_ganadero = p_id_ganadero;
+            END
+            
         ');
 
         DB::unprepared('
@@ -277,6 +302,18 @@ class CreateStoredProcedures extends Migration
         ');
 
         DB::unprepared('
+            DROP PROCEDURE IF EXISTS ObtenerTratamientoGanadero;
+            CREATE PROCEDURE ObtenerTratamientoGanadero(in p_id_ganadero INT)
+            BEGIN
+               SELECT * FROM tratamientos 
+               join historial_medico hm on hm.id_historial = tratamientos.id_historial 
+               join ganado g on g.id_vaca = hm.id_vaca
+               where g.id_ganadero = p_id_ganadero;
+            END
+            
+        ');
+
+        DB::unprepared('
             DROP PROCEDURE IF EXISTS ObtenerTratamientoId;
             CREATE PROCEDURE ObtenerTratamientoId(IN p_id_tratamiento INT)
             BEGIN
@@ -329,11 +366,12 @@ class CreateStoredProcedures extends Migration
 
         // Procedimientos Almacenados para Producción
         DB::unprepared('
-            DROP PROCEDURE IF EXISTS ObtenerProduccion;
-            CREATE PROCEDURE ObtenerProduccion()
+            DROP PROCEDURE IF EXISTS ObtenerProduccionGanadero;
+            CREATE PROCEDURE ObtenerProduccionGanadero(in p_id_ganadero INT)
             BEGIN
-                SELECT * FROM produccion;
+                SELECT * FROM produccion join ganado g on g.id_vaca = produccion.id_vaca where g.id_ganadero = p_id_ganadero;
             END
+            
         ');
 
         DB::unprepared('
@@ -393,6 +431,14 @@ class CreateStoredProcedures extends Migration
             CREATE PROCEDURE ObtenerVentasGanado()
             BEGIN
                 SELECT * FROM ventas_ganado;
+            END
+        ');
+
+        DB::unprepared('
+            DROP PROCEDURE IF EXISTS ObtenerVentasGanadoGanadero;
+            CREATE PROCEDURE ObtenerVentasGanadoGanadero(in p_id_ganadero INT)
+            BEGIN
+                SELECT * FROM ventas_ganado where id_vendedor = p_id_ganadero;
             END
         ');
 
@@ -460,6 +506,14 @@ class CreateStoredProcedures extends Migration
         ');
 
         DB::unprepared('
+            DROP PROCEDURE IF EXISTS ObtenerVentasGanadero;
+            CREATE PROCEDURE ObtenerVentasGanadero(in p_id_ganadero INT)
+            BEGIN
+                SELECT * FROM ventas where id_vendedor = p_id_ganadero;
+            END
+        ');
+
+        DB::unprepared('
             DROP PROCEDURE IF EXISTS ObtenerVentasId;
             CREATE PROCEDURE ObtenerVentasId(IN p_id_venta INT)
             BEGIN
@@ -522,6 +576,14 @@ class CreateStoredProcedures extends Migration
             CREATE PROCEDURE ObtenerPublicaciones()
             BEGIN
                 SELECT * FROM publicaciones;
+            END
+        ');
+
+        DB::unprepared('
+            DROP PROCEDURE IF EXISTS ObtenerPublicacionesGanadero;
+            CREATE PROCEDURE ObtenerPublicacionesGanadero(in p_id_ganadero INT)
+            BEGIN
+                SELECT * FROM publicaciones where id_ganadero = p_id_ganadero;
             END
         ');
 
@@ -596,6 +658,14 @@ class CreateStoredProcedures extends Migration
         ');
 
         DB::unprepared('
+            DROP PROCEDURE IF EXISTS ObtenerPublicacionesGGanadero;
+            CREATE PROCEDURE ObtenerPublicacionesGGanadero(in p_id_ganadero INT)
+            BEGIN
+                SELECT * FROM publicaciones_ganado where id_ganadero = p_id_ganadero;
+            END
+        ');
+
+        DB::unprepared('
             DROP PROCEDURE IF EXISTS ObtenerPublicacionesGId;
             CREATE PROCEDURE ObtenerPublicacionesGId(IN p_id_publicacion INT)
             BEGIN
@@ -662,6 +732,15 @@ class CreateStoredProcedures extends Migration
                 SELECT * FROM reportes;
             END
         ');
+
+        DB::unprepared('
+            DROP PROCEDURE IF EXISTS ObtenerReportesGanadero;
+            CREATE PROCEDURE ObtenerReportesGanadero(in p_id_ganadero INT)
+            BEGIN
+                SELECT * FROM reportes where id_ganadero = p_id_ganadero;
+            END
+        ');
+
 
         DB::unprepared('
             DROP PROCEDURE IF EXISTS ObtenerReportesId;
@@ -1015,7 +1094,19 @@ class CreateStoredProcedures extends Migration
             'Total_Gestores',
             'Total_Leche',
             'Total_Carne',
-            'ObtenerProduccionMensualPorGanadero'
+            'ObtenerProduccionMensualPorGanadero',
+            'ObtenerGanadoGanadero',
+            'ObtenerAlimentoGanadero',
+            'ObtenerHistorialMedicoGanadero',
+            'ObtenerTratamientoGanadero',
+            'ObtenerProduccionGanadero',
+            'ObtenerVentasGanadero',
+            'ObtenerPublicacionesGanadero',
+            'ObtenerPublicacionesGGanadero',
+            'ObtenerVentasGanadoGanadero',
+            'ObtenerReportesGanadero',
+            
+        
         ];
 
         foreach ($procedures as $procedure) {

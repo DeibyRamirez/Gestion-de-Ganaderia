@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('reportes', function (Blueprint $table) {
             $table->id('id_reporte');
             $table->foreignId('id_gestor')->constrained('users', 'id_usuario')->onDelete('cascade');
+            $table->foreignId('id_ganadero')->constrained('users', 'id_usuario')->onDelete('cascade');
             $table->text('descripcion');
             $table->date('fecha_reporte');
             $table->timestamps();

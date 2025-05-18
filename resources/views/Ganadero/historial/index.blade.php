@@ -68,6 +68,9 @@
                 class="inline-flex items-center justify-center px-3 py-1.5 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition text-sm">
                 Ver
               </a>
+              @if (in_array(Auth()->user()->rol, ['administrador', 'gestor']))
+
+
               <a href="{{ route('Ganadero.historial.edit', $historial->id_historial) }}"
                 class="inline-flex items-center justify-center px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition text-sm">
                 Editar
@@ -81,7 +84,7 @@
                   Eliminar
                 </button>
               </form>
-
+              @endif
 
             </div>
 

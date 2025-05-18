@@ -49,7 +49,8 @@ class ProduccionController extends Controller
 
     public function indexDetallada()
     {
-        $produccionData = DB::select('CALL ObtenerProduccion()');
+        $usuario = Auth::user()->id_usuario;
+        $produccionData = DB::select('CALL ObtenerProduccionGanadero(?)', [$usuario]);
         $produccion = collect($produccionData); // Sin mapear a modelo
         $vacas = Ganado::all();
         return view('Ganadero.produccion.indexDetallada', compact('produccion', 'vacas'));

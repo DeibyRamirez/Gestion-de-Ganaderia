@@ -46,7 +46,7 @@
             @foreach ($publicaciones as $publicacion)
             <div class="min-w-[300px] max-w-[300px] bg-white rounded-2xl shadow-lg p-6 border flex-shrink-0">
                 <div class="mb-2 text-sm text-gray-500">Por: {{ $publicacion->ganadero->name }}</div>
-                <div class="mb-2 text-gray-700">{{ $publicacion->descripcion }}</div>
+                <div class="mb-2 text-gray-700">{{ \Illuminate\Support\Str::limit($publicacion->descripcion ,40)}}</div>
 
                 <div class="text-sm text-gray-600 space-y-1 mb-4">
                     <p><strong>Tipo:</strong> {{ $publicacion->tipo_producto }}</p>
@@ -69,6 +69,7 @@
                 <div class="flex flex-wrap justify-between gap-2">
                     <a href="{{ route('Ganadero.publicaciones.show', $publicacion->id_publicacion ) }}"
                         class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 text-sm">Ver</a>
+                        @if (Auth::id() === $publicacion->id_ganadero)
                     <a href="{{ route('Ganadero.publicaciones.edit', $publicacion->id_publicacion) }}"
                         class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">Editar</a>
                     <form action="{{ route('Ganadero.publicaciones.destroy', $publicacion->id_publicacion) }}" method="POST"
@@ -78,6 +79,7 @@
                         <button type="submit"
                             class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Eliminar</button>
                     </form>
+                    @endif
                     <button class="px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 text-sm">Comprar</button>
                 </div>
             </div>
@@ -94,7 +96,7 @@
             @foreach ($publicacionesG as $publicacion)
             <div class="min-w-[300px] max-w-[300px] bg-white rounded-2xl shadow-lg p-6 border flex-shrink-0">
                 <div class="mb-2 text-sm text-gray-500">Por: {{ $publicacion->ganadero->name }}</div>
-                <div class="mb-2 text-gray-700">{{ $publicacion->descripcion }}</div>
+                <div class="mb-2 text-gray-700">{{\Illuminate\Support\Str::limit( $publicacion->descripcion ,40) }}</div>
 
                 <div class="text-sm text-gray-600 space-y-1 mb-4">
                     <p><strong>Vaca:</strong> {{ $publicacion->id_vaca }}</p>
@@ -116,6 +118,7 @@
                 <div class="flex flex-wrap justify-between gap-2">
                     <a href="{{ route('Ganadero.publicaciones.showG', $publicacion->id_publicacion ) }}"
                         class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 text-sm">Ver</a>
+                    @if (Auth::id() === $publicacion->id_ganadero)
                     <a href="{{ route('Ganadero.publicaciones.editG', $publicacion->id_publicacion) }}"
                         class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm">Editar</a>
                     <form action="{{ route('Ganadero.publicaciones.destroyG', $publicacion->id_publicacion) }}" method="POST"
@@ -125,6 +128,7 @@
                         <button type="submit"
                             class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 text-sm">Eliminar</button>
                     </form>
+                    @endif
                     <button class="px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-700 text-sm">Comprar</button>
                 </div>
             </div>

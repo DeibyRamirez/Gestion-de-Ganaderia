@@ -17,4 +17,9 @@ class Reporte extends Model
 {
     return $this->belongsTo(User::class, 'id_gestor', 'id_usuario');
 }
+    public function ganadero()
+{
+    return $this->belongsTo(User::class, 'id_ganadero', 'id_usuario');
+}
+
 }

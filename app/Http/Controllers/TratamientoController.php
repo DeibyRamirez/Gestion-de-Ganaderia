@@ -14,11 +14,11 @@ class TratamientoController extends Controller
 {
     public function index()
     {
-
-        $tratamientosData = DB::select('CALL ObtenerTratamiento()');
-        $tratamientos = collect($tratamientosData); // Sin mapear a modelo
-        $Gestores = Tratamiento::with('gestor')->get();
-        return view('Ganadero.tratamientosReportes.index', compact('tratamientos', 'Gestores'));
+        // $usuario = Auth::user()->id_usuario;
+        // $tratamientosData = DB::select('CALL ObtenerTratamientoGanadero(?)', [$usuario]);
+        // $tratamientos = collect($tratamientosData); // Sin mapear a modelo
+        // $Gestores = Tratamiento::with('gestor')->get();
+        // return view('Ganadero.tratamientosReportes.index', compact('tratamientos', 'Gestores'));
 
     }
 

@@ -59,9 +59,11 @@ class VentaController extends Controller
 
     public function indexDetallada()
     {
-        $ventasData = DB::select('CALL ObtenerVentas()');
+        $usuario = Auth::user()->id_usuario;
+        $ventasData = DB::select('CALL ObtenerVentasGanadero(?)',[$usuario]);
         $ventas = collect($ventasData); // Sin mapear a modelo
-        $ventasGanadoData = DB::select('CALL ObtenerVentasGanado()');
+        
+        $ventasGanadoData = DB::select('CALL ObtenerVentasGanadoGanadero(?)',[$usuario]);
         $ventas_ganado = collect($ventasGanadoData); // Sin mapear a modelo
         $Ganaderos = User::all();
         $Ganado = Ganado::all();

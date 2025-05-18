@@ -9,7 +9,7 @@
     </div>
 
     @if (in_array(Auth()->user()->rol, ['administrador', 'gestor']))
-  
+
     <a href="{{ route('Ganadero.alimentacion.create') }}" class="inline-flex items-center px-5 py-2.5 bg-emerald-600 text-white rounded-lg shadow hover:bg-emerald-700 transition">
       <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
         <circle cx="12" cy="12" r="10"></circle>
@@ -17,7 +17,7 @@
       </svg>
       Nuevo Plan
     </a>
- @endif
+    @endif
 
 
   </div>
@@ -67,6 +67,9 @@
           class="inline-flex items-center justify-center px-3 py-1.5 bg-gray-600 text-white rounded-md hover:bg-gray-700 transition text-sm">
           Ver
         </a>
+        @if (in_array(Auth()->user()->rol, ['administrador', 'gestor']))
+
+
         <a href="{{ route('Ganadero.alimentacion.edit', $plan->id_alimentacion) }}"
           class="inline-flex items-center justify-center px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition text-sm">
           Editar
@@ -80,6 +83,7 @@
             Eliminar
           </button>
         </form>
+        @endif
       </div>
     </div>
     @empty

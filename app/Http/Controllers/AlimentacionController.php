@@ -13,10 +13,9 @@ class AlimentacionController extends Controller
 {
     public function indexGanadero()
     {
+        $usuario = Auth::user()->id_usuario;
         // LLamo a los datos de ganado en el proceso almacenado
-        $alimentacionData = DB::select('CALL ObtenerAlimento()');
-
-
+        $alimentacionData = DB::select('CALL ObtenerAlimentoGanadero(?)',[$usuario]);
         $alimentacion = collect($alimentacionData); // Sin mapear a modelo
         $vacas = Ganado::all();
 

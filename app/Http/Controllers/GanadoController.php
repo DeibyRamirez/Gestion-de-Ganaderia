@@ -12,8 +12,9 @@ class GanadoController extends Controller
 {
     public function indexGanadero()
     {
+        $usuario = Auth::user()->id_usuario;
         // LLamo a los datos de ganado en el proceso almacenado
-        $ganadoData = DB::select('CALL ObtenerGanado()');
+        $ganadoData = DB::select('CALL ObtenerGanadoGanadero(?)',[$usuario]);
 
         // Utilizo collect para convertir el resultado en una colección y motrarlo en la vista
         $ganado = collect($ganadoData); // Sin mapear a modelo

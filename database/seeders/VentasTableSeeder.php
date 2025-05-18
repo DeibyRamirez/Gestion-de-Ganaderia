@@ -14,7 +14,7 @@ class VentasTableSeeder extends Seeder
     public function run(): void
     {
         Venta::create([
-            'id_vendedor' => 3,
+            'id_vendedor' => 1,
             'id_comprador' => 1,
             'producto' => 'leche',
             'cantidad' => 3 ,

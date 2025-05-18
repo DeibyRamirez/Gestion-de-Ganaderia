@@ -15,18 +15,21 @@ class ReportesTableSeeder extends Seeder
     {
         Reporte::create([
             'id_gestor' => 3,
+            'id_ganadero' => 1,
             'descripcion' => 'Estas ventas estan siendo  muy buenas este mes...',
             'fecha_reporte' => now()
         ]);
 
         Reporte::create([
             'id_gestor' => 3,
+            'id_ganadero' => 1,
             'descripcion' => 'Estas ventas estan siendo  muy suaves este mes...',
             'fecha_reporte' => now()
         ]);
 
         Reporte::create([
             'id_gestor' => 3,
+            'id_ganadero' => 1,
             'descripcion' => 'Las compras de ganado fueron exitosamente aceptadas, y ahora tenemos un nuevo socio para las ventas de este mes...',
             'fecha_reporte' => now()
         ]);

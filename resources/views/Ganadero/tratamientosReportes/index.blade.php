@@ -21,7 +21,7 @@
     </div>
     @endif
   </div>
-  
+
 
 
   {{-- Mensajes --}}
@@ -58,6 +58,8 @@
               class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition text-sm font-medium">
               Ver
             </a>
+            @if (in_array(Auth()->user()->rol, ['administrador', 'gestor']))
+
             <a href="{{ route('Ganadero.tratamientosReportes.edit', $tratamiento->id_tratamiento) }}"
               class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm font-medium">
               Editar
@@ -71,6 +73,8 @@
                 Eliminar
               </button>
             </form>
+            @endif
+
           </div>
         </div>
         @endforeach
@@ -98,14 +102,17 @@
             Descargar
           </button>
         </div>
-        <p class="text-sm text-gray-600 mt-2"><strong>Gestor:</strong> {{ $reporte->gestor->name ?? 'Nombre no disponible' }}</p>
+        <p class="text-sm text-gray-600 mt-2"><strong>Gestor:</strong> {{ $reporte->id_gestor }}</p>
+                <p class="text-sm text-gray-600 mt-2"><strong>Ganadero:</strong> {{ $reporte->id_ganadero }}</p>
         <p class="text-sm text-gray-600 mt-1"><strong>Descripción:</strong> {{ $reporte->descripcion }}</p>
-        <p class="text-xs text-gray-400 mt-2">Fecha: {{ \Carbon\Carbon::parse($reporte->fecha)->format('d/m/Y') }}</p>
+        <p class="text-xs text-gray-400 mt-2">Fecha: {{ \Carbon\Carbon::parse($reporte->fecha_reporte)->format('d/m/Y') }}</p>
         <div class="mt-5 flex justify-end space-x-2">
           <a href="{{ route('Ganadero.tratamientosReportes.showR', $reporte->id_reporte) }}"
             class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition text-sm font-medium">
             Ver
           </a>
+          @if (in_array(Auth()->user()->rol, ['administrador', 'gestor']))
+
           <a href="{{ route('Ganadero.tratamientosReportes.editR', $reporte->id_reporte) }}"
             class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition text-sm font-medium">
             Editar
@@ -119,6 +126,7 @@
               Eliminar
             </button>
           </form>
+          @endif
         </div>
       </div>
       @endforeach

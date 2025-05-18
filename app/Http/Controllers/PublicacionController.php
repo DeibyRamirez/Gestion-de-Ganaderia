@@ -115,9 +115,10 @@ class PublicacionController extends Controller
     //Publicaciones de Venta Ganado..
     public function createG()
     {
-        $Ganado = Ganado::all();
-        $Ganaderos = User::all();
-        return view('Ganadero.publicaciones.createG', compact('Ganaderos', 'Ganado'));
+        $usuario = Auth()->user()->id_usuario;
+        $ganadoData = DB::select('CALL ObtenerGanadoGanadero(?)', [$usuario]);
+        $Ganado = collect($ganadoData);
+        return view('Ganadero.publicaciones.createG', compact('Ganado'));
     }
     public function storeG(Request $request)
     {

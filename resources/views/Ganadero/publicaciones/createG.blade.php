@@ -60,7 +60,7 @@
                 <div>
                     <label for="id_ganadero" class="block text-sm font-medium text-gray-700 mb-1">Ganadero</label>
                     <input type="text" value="{{ Auth()->user()->name }}" class="w-full border-gray-300 rounded-md shadow-sm bg-gray-100" readonly>
-                    <input type="hidden" name="id_ganadero" id="id_ganadero" value="{{ Auth()->user()->id }}">
+                    <input type="hidden" name="id_ganadero" id="id_ganadero" value="{{ Auth()->user()->id_usuario }}">
                 </div>
             </div>
             {{-- Descripción --}}
