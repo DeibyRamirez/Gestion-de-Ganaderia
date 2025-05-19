@@ -102,7 +102,7 @@
             Descargar
           </button>
         </div>
-        <p class="text-sm text-gray-600 mt-2"><strong>Gestor:</strong> {{ $reporte->id_gestor }}</p>
+        <p class="text-sm text-gray-600 mt-2"><strong>Gestor ID:</strong> {{ $reporte->id_gestor }}</p>
                 <p class="text-sm text-gray-600 mt-2"><strong>Ganadero:</strong> {{ $reporte->id_ganadero }}</p>
         <p class="text-sm text-gray-600 mt-1"><strong>Descripción:</strong> {{ $reporte->descripcion }}</p>
         <p class="text-xs text-gray-400 mt-2">Fecha: {{ \Carbon\Carbon::parse($reporte->fecha_reporte)->format('d/m/Y') }}</p>

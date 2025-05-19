@@ -11,8 +11,8 @@
     </div>
 
     <div class="text-gray-700 space-y-2 text-base">
-  
-  
+
+
       <p><strong>Comprador:</strong> {{ $comprador ? $comprador->name : 'No encontrado' }}</p>
       <p><strong>Cantidad:</strong> {{ $venta->cantidad }}</p>
       <p><strong>Precio:</strong> {{ $venta->precio }}</p>
@@ -21,8 +21,10 @@
     </div>
 
     <div class="mt-6 flex justify-end space-x-3">
+      @if (in_array(Auth()->user()->rol, ['administrador','ganadero']))
       <a href="{{ route('Ganadero.ventas.edit', $venta->id_venta) }}"
         class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Editar</a>
+      @endif
 
       @if (Auth()->user()->rol == 'ganadero')
       <a href="{{ route('Ganadero.ventas.indexDetallada') }}"

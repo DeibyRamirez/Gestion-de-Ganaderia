@@ -375,6 +375,15 @@ class CreateStoredProcedures extends Migration
         ');
 
         DB::unprepared('
+            DROP PROCEDURE IF EXISTS ObtenerProduccion;
+            CREATE PROCEDURE ObtenerProduccion()
+            BEGIN
+                SELECT * FROM produccion;
+            END
+            
+        ');
+
+        DB::unprepared('
             DROP PROCEDURE IF EXISTS ObtenerProduccionId;
             CREATE PROCEDURE ObtenerProduccionId(IN p_id_produccion INT)
             BEGIN
@@ -755,12 +764,13 @@ class CreateStoredProcedures extends Migration
             DROP PROCEDURE IF EXISTS InsertarReportes;
             CREATE PROCEDURE InsertarReportes(
                 IN p_id_gestor INT,
+                IN p_id_ganadero INT,
                 IN p_descripcion TEXT,
                 IN p_fecha TIMESTAMP
             )
             BEGIN
-                INSERT INTO reportes (id_gestor, descripcion, fecha_reporte)
-                VALUES (p_id_gestor, p_descripcion, p_fecha);
+                INSERT INTO reportes (id_gestor, id_ganadero, descripcion, fecha_reporte)
+                VALUES (p_id_gestor, p_id_ganadero, p_descripcion, p_fecha);
                 SELECT LAST_INSERT_ID() AS id_reporte;
             END
         ');
@@ -770,12 +780,14 @@ class CreateStoredProcedures extends Migration
             CREATE PROCEDURE ActualizarReportes(
                 IN p_id_reporte INT,
                 IN p_id_gestor INT,
+                IN p_id_ganadero INT,
                 IN p_descripcion TEXT,
                 IN p_fecha TIMESTAMP
             )
             BEGIN
                 UPDATE reportes
                 SET id_gestor = p_id_gestor,
+                    ig_ganadero = p_id_ganadero,
                     descripcion = p_descripcion,
                     fecha_reporte = p_fecha
                 WHERE id_reporte = p_id_reporte;

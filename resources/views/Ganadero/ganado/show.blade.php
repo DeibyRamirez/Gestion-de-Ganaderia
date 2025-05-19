@@ -19,9 +19,12 @@
     </div>
 
     <div class="mt-6 flex justify-end space-x-3">
+      @if (in_array(Auth()->user()->rol, ['administrador','ganadero']))
       <a href="{{ route('Ganadero.ganado.edit', $vaca->id_vaca) }}"
         class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">Editar</a>
         
+      @endif
+      
         @if (Auth()->user()->rol == 'ganadero')
         <a href="{{ route('Ganadero.ganado.index') }}"
         class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition">Volver</a>

@@ -49,33 +49,28 @@
                 <div>
                     <label for="id_ganadero" class="block text-sm font-medium text-gray-700 mb-1">Ganadero</label>
                     <input type="text" value="{{ Auth()->user()->name }}" class="w-full border-gray-300 rounded-md shadow-sm bg-gray-100" readonly>
-                    <input type="hidden" name="id_ganadero" id="id_ganadero" value="{{ Auth()->user()->id }}">
+                    <input type="hidden" name="id_ganadero" id="id_ganadero" value="{{ Auth()->user()->id_usuario }}">
+                </div>
+
+                {{-- Tipo de Producto --}}
+                <div>
+                    <label for="tipo_producto" class="block text-sm font-medium text-gray-700 mb-1">Tipo de Producto</label>
+                    <select name="tipo_producto" id="tipo_producto"
+                        class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="leche">Leche</option>
+                        <option value="carne">Carne</option>
+
+                    </select>
                 </div>
             </div>
+
+
             {{-- Descripción --}}
             <div class="md:col-span-2">
                 <label for="descripcion" class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
                 <textarea name="descripcion" id="descripcion" rows="4"
                     class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>{{ old('descripcion') }}</textarea>
-            </div>
-
-            {{-- Precio --}}
-            <div>
-                <label for="precio" class="block text-sm font-medium text-gray-700 mb-1">Precio</label>
-                <input type="number" step="0.01" min="0" name="precio" id="precio" value="{{ old('precio') }}"
-                    class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
-            </div>
-
-            {{-- Tipo de Producto --}}
-            <div>
-                <label for="tipo_producto" class="block text-sm font-medium text-gray-700 mb-1">Tipo de Producto</label>
-                <select name="tipo_producto" id="tipo_producto"
-                    class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
-                    <option value="">Seleccione una opción</option>
-                    <option value="leche">Leche</option>
-                    <option value="carne">Carne</option>
-
-                </select>
             </div>
 
             {{-- Cantidad --}}
@@ -84,6 +79,17 @@
                 <input type="number" min="1" name="cantidad" id="cantidad" value="{{ old('cantidad') }}"
                     class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
             </div>
+
+
+            {{-- Precio --}}
+            <div>
+                <label for="precio" class="block text-sm font-medium text-gray-700 mb-1">Precio</label>
+                <input type="number" step="0.01" min="0" name="precio" id="precio" value="{{ old('precio') }}"
+                    class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
+            </div>
+
+
+
 
             {{-- Estado --}}
             <input type="hidden" name="estado" value="disponible">

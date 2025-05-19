@@ -118,7 +118,11 @@ class PublicacionController extends Controller
         $usuario = Auth()->user()->id_usuario;
         $ganadoData = DB::select('CALL ObtenerGanadoGanadero(?)', [$usuario]);
         $Ganado = collect($ganadoData);
-        return view('Ganadero.publicaciones.createG', compact('Ganado'));
+        $GanadoRolAdministradorData = DB::select('CALL ObtenerGanado()');
+        $GanadoRolAdministrador = collect($GanadoRolAdministradorData);
+        return view('Ganadero.publicaciones.createG', compact('Ganado','GanadoRolAdministrador'));
+
+        
     }
     public function storeG(Request $request)
     {

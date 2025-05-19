@@ -22,17 +22,19 @@ class ReporteController extends Controller
     }
 
     public function createR()
-    {
-        $Gestores = User::all();
-        return view('Ganadero.tratamientosReportes.createReporte', compact('Gestores'));
-    }
+{
+    // Obtener solo usuarios con rol 'ganadero' y seleccionar solo id_usuario
+    $Ganaderos = User::where('rol', 'ganadero')->select('id_usuario')->get();
+    return view('Ganadero.tratamientosReportes.createReporte', compact('Ganaderos'));
+}
 
     public function storeR(Request $request)
     {
         try {
             // Proceso almacenado para insertar ganado
-            DB::statement('CALL InsertarReportes(?, ?, ?)', [
+            DB::statement('CALL InsertarReportes(?, ?, ?, ?)', [
                 $request->id_gestor,
+                $request->id_ganadero,
                 $request->descripcion,
                 $request->fecha_reporte,
             ]);
@@ -65,9 +67,10 @@ class ReporteController extends Controller
     public function updateR(Request $request, $id)
     {
         try {
-            DB::statement('CALL ActualizarReportes(?, ?, ?, ?)', [
+            DB::statement('CALL ActualizarReportes(?, ?, ?, ?, ?)', [
                 $id,
                 $request->id_gestor,
+                $request->id_administrador,
                 $request->descripcion,
                 $request->fecha_reporte,
             ]);

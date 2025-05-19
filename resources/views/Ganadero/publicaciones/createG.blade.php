@@ -45,7 +45,8 @@
 
             <div class="grid md:grid-cols-2 gap-4">
 
-                {{-- ID del Ganadero --}}
+                {{-- ID del vaca --}}
+                @if (Auth()->user()->rol === 'ganadero')
                 <div>
                     <label for="id_vaca" class="block text-sm font-medium text-gray-700 mb-1"> Animal</label>
                     <select name="id_vaca" id="id_vaca" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
@@ -55,6 +56,20 @@
                         @endforeach
                     </select>
                 </div>
+                @endif
+
+                @if (Auth()->user()->rol === 'administrador')
+                <div>
+                    <label for="id_vaca" class="block text-sm font-medium text-gray-700 mb-1"> Animal</label>
+                    <select name="id_vaca" id="id_vaca" class="w-full border-gray-300 rounded-md shadow-sm focus:border-emerald-500 focus:ring-emerald-500" required>
+                        <option value="">Seleccione una opción</option>
+                        @foreach ($GanadoRolAdministrador as $vacaADM)
+                        <option value="{{ $vacaADM->id_vaca }}">{{ $vacaADM->id_vaca }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                @endif
+
 
                 {{-- ID del Ganadero --}}
                 <div>

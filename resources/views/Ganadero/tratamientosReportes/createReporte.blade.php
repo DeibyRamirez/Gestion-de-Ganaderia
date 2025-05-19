@@ -32,10 +32,25 @@
         <form action="{{ route('Ganadero.tratamientosReportes.storeR') }}" method="POST" class="space-y-6">
             @csrf
 
-            <div >
+            <div>
                 <label for="id_gestor" class="block text-sm font-medium text-gray-700 mb-1">Gestor</label>
                 <input type="text" id="id_gestor_display" value="{{ Auth()->user()->name }}" class="w-full border-gray-300 rounded-md shadow-sm bg-gray-100" disabled>
                 <input type="hidden" name="id_gestor" id="id_gestor" value="{{ Auth()->user()->id_usuario }}">
+            </div>
+
+            {{-- id_ganadero --}}
+            <div class="w-full md:w-1/2">
+                <label for="id_ganadero" class="block text-sm font-medium text-gray-700 mb-1">Ganadero</label>
+                <select name="id_ganadero" id="id_ganadero" class="w-full border-gray-300 rounded-md shadow-sm" required>
+                    @if(Auth()->user()->rol === 'ganadero')
+                    <option value="{{ Auth()->user()->id_usuario }}">{{ Auth()->user()->id_usuario }}</option>
+                    @else
+                    <option value="">Seleccione un ganadero</option>
+                    @foreach($Ganaderos as $ganadero)
+                    <option value="{{ $ganadero->id_usuario }}">{{ $ganadero->id_usuario }}</option>
+                    @endforeach
+                    @endif
+                </select>
             </div>
 
             {{-- Descripcion Reporte --}}

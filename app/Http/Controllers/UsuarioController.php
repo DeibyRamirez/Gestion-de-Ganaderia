@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -30,27 +31,25 @@ class UsuarioController extends Controller
                 $request->name,
                 $request->last_name,
                 $request->email,
-                $request->password,
+                Hash::make($request->password),
                 $request->telefono,
                 $request->direccion,
                 $request->rol,
             ]);
-            
-                return redirect()->route('Administrador.usurio.index')->with('success', 'Usuario creado con éxito.');
-            
+
+            return redirect()->route('Administrador.usuario.index')->with('success', 'Usuario creado con éxito.');
         } catch (\Throwable $th) {
-            Log::error('Error al crear la Producción: ' . $th->getMessage());
-            {
+            Log::error('Error al crear la Producción: ' . $th->getMessage()); {
                 return redirect()->route('Administrador.usuario.index')->with('error', 'Error al crear el Usuario.')->withInput();
             }
         }
-
     }
 
-    
+
 
     public function edit($id)
-    {   $usuario = User::findOrFail($id);
+    {
+        $usuario = User::findOrFail($id);
         return view('Administrador.usuario.edit', compact('id', 'usuario'));
     }
 
@@ -68,12 +67,10 @@ class UsuarioController extends Controller
                 $request->direccion,
                 $request->rol,
             ]);
-            
-                return redirect()->route('Administrador.usuario.index')->with('success', 'Usuario creado con éxito.');
-            
+
+            return redirect()->route('Administrador.usuario.index')->with('success', 'Usuario creado con éxito.');
         } catch (\Throwable $th) {
-            Log::error('Error al crear la Producción: ' . $th->getMessage());
-            {
+            Log::error('Error al crear la Producción: ' . $th->getMessage()); {
                 return redirect()->route('Administrador.usuario.index')->with('error', 'Error al crear el Usuario.')->withInput();
             }
         }
@@ -83,10 +80,10 @@ class UsuarioController extends Controller
     {
         try {
             DB::statement('CALL EliminarUsuarios(?)', [$id]);
+            return redirect()->route('Administrador.usuario.index')->with('success', 'Usuario eliminado con éxito.');
         } catch (\Throwable $th) {
             Log::error('Error al eliminar el Usuario: ' . $th->getMessage());
             return redirect()->route('Administrador.usuario.index')->with('error', 'Error al eliminar el Usuario.');
         }
-
     }
 }
